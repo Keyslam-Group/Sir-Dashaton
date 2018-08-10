@@ -38,11 +38,11 @@ local function newVertices(width, height, layers)
    local uvStep = 1 / layers
 
    local vertices = {}
-   local start_v, end_v = 0, 1
+   local start_u, end_u = 0, 1
 
    --First layer is bottom and the last is top
    for layer = 0, layers - 1 do
-      local start_u, end_u = layer * uvStep, (layer + 1) * uvStep
+      local start_v, end_v =  1 - (layer + 1) * uvStep, 1 - layer * uvStep
       local o = (layer * 4)
 
       vertices[o+1] = {-width/2, -height/2, layer, start_u, start_v} -- top-left
