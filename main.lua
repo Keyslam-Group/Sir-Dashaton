@@ -1,8 +1,7 @@
-function love.load()
-end
+local Gamestate = require("lib.gamestate")
 
-function love.update(dt)
-end
+local Game = require("src.states.game")
+local Test = require("src.states.levels.test")
 
-function love.draw()
-end
+Gamestate.registerEvents()
+Gamestate.switch(Test)
