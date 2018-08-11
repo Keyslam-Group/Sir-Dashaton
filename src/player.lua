@@ -13,6 +13,10 @@ function Player:initialize()
    self.batch:add(200, 200, 0, 0, 4)
 end
 
+function Player:update()
+   self.batch:setTransformation(1, 200, 200, 0, love.timer.getTime() % (2*math.pi), 4)
+end
+
 function Player:draw()
    Entity.draw(self)
 

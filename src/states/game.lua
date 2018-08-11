@@ -22,6 +22,7 @@ function Game:update(dt)
 end
 
 function Game:render()
+   self.camera:clear()
    for _, entity in ipairs(self.entities) do
       entity:draw()
    end

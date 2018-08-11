@@ -83,7 +83,7 @@ end
 -- @param usage How the mesh is supposed to be used (stream, dynamic, static).
 -- @returns A new VoxelBatch object.
 function VoxelBatch.new(texture, layers, voxelCount, usage)
-   local vertices = newVertices(texture:getWidth() / layers, texture:getHeight(), layers)
+   local vertices = newVertices(texture:getWidth(), texture:getHeight() / layers, layers)
    local modelAttributes, instanceData, vertexBuffer = newModelAttributes(voxelCount, usage)
 
    --The model mesh, is a static mesh which has the different layers and the associated texture
@@ -162,7 +162,7 @@ function VoxelBatch:setAnimationFrame(index, frame)
    -- TODO: Check if index is < currentIndex
    if self.texture:getTextureType() == "array" then
       -- TODO: Check that layers actually range from 0 to getLayers() - 1 inclusive
-      if frame >= 0 and frame < self.texture:getLayers() then
+      if frame >= 0 and frame < self.texture:getLayerCount() then
          local instance = self.vertexBuffer[index - 1]
 
          instance.frame = math.floor(frame)

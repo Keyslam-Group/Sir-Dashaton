@@ -12,7 +12,7 @@ function Entity:update(dt)
 end
 
 function Entity:draw()
-   love.graphics.setColor(1, 0, 1)
+   love.graphics.setColor(1, 1, 1)
 end
 
 return Entity
