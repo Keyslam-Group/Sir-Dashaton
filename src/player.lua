@@ -12,15 +12,17 @@ Player.image = love.graphics.newImage("assets/skeleton1-stab.png")
 Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
 
 Player.acceleration = 5000
-Player.maxVelocity  = 250
+Player.maxVelocity  = 350
 Player.friction     = 15
 
-Player.dashing     = false
-Player.dashTarget  = Vec3(0, 0, 0)
-Player.dashSpeed   = 1500
-Player.maxDashDist = 400
-Player.effDashDist = 0
-Player.curDashDist = 0
+Player.dashing      = false
+Player.dashTarget   = Vec3(0, 0, 0)
+Player.dashSpeed    = 3000
+Player.maxDashDist  = 400
+Player.effDashDist  = 0
+Player.curDashDist  = 0
+Player.curDashSpeed = 0
+Player.dashFriction = 10
 
 function Player:initialize(...)
    Entity.initialize(self, ...)
@@ -56,9 +58,17 @@ function Player:update(dt)
 
       -- Friction and speed clamp
       self.velocity = self.velocity:trim(self.maxVelocity)
-      self.velocity = self.velocity - (self.velocity * self.friction * dt)
-   end  
+      
+   end
 
+   local friction = self.dashing and self.dashFriction or self.friction
+   self.velocity = self.velocity - (self.velocity * friction * dt)
+
+   if self.velocity:len() < 0.1 then
+      self.velocity.x, self.velocity.y, self.velocity.z = 0, 0, 0
+   end
+   
+   -- Move
    self.position = self.position + self.velocity * dt
 
    -- Collision
@@ -89,8 +99,9 @@ function Player:update(dt)
       if self.controller:pressed("dash") then
          -- TODO Clamp between dash position and max dist. Maybe a short minimum distance as well?
          self.curDashDist = 0
+         self.curDashSpeed = self.dashSpeed
 
-         self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.dashSpeed
+         self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.curDashSpeed
          self.effDashDist = self.maxDashDist -- Clamp this
          self.dashing = true
 
@@ -101,9 +112,7 @@ function Player:update(dt)
 
    -- Dashing
    if self.dashing then
-      self.curDashDist = self.curDashDist + self.velocity:len() * dt
-      
-      if self.curDashDist >= self.effDashDist then
+      if self.velocity:len() < 30 then
          self.dashing = false
       end
    end
