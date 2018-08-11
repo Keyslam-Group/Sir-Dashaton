@@ -9,7 +9,7 @@ local World  = require("src.world")
 
 local Player = Class("Player", Entity)
 Player.isPlayer = true
-Player.image = love.graphics.newImage("assets/skeleton1-stab.png")
+Player.image = love.graphics.newImage("assets/skeleton1.png")
 Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
 
 Player.acceleration = 5000

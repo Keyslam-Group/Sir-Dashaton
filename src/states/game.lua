@@ -20,7 +20,7 @@ end
 
 function Game:update(dt)
    Timer.update(dt)
-   
+
    for _, entity in ipairs(self.entities) do
       entity:update(dt)
    end
@@ -42,10 +42,10 @@ function Game:draw()
    end
 
    for _, entity in ipairs(self.entities) do
-      entity:debugDraw()
+      --entity:debugDraw()
    end
 
-   World._hash:draw("line", false, true)
+   --World._hash:draw("line", false, true)
 
    self.camera:renderTo(self.render, self)
    self.camera:render()   

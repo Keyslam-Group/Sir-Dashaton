@@ -18,7 +18,7 @@ function Test:enter()
    self.entities[1] = Player()
 
    for i = 2, 10 do
-      self.entities[i] = Wall(Vec3(i * 200 - 170, 200, 0))
+      self.entities[i] = Wall(Vec3(i * 96 - 48, 200, 0), love.math.random(0, 3) * math.pi/2)
    end
 
    for i = 1, 10 do

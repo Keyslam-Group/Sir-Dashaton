@@ -5,8 +5,8 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Wall = Class("Wall", Entity)
-Wall.image = love.graphics.newImage("assets/wall_placeholder.png")
-Wall.batch = Lovox.newVoxelBatch(Wall.image, 48, 100, "static")
+Wall.image = love.graphics.newImage("assets/wall.png")
+Wall.batch = Lovox.newVoxelBatch(Wall.image, 64, 100, "static")
 
 function Wall:initialize(...)
    Entity.initialize(self, ...)
