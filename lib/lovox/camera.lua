@@ -76,6 +76,10 @@ function Camera:setShader(shader)
       self.shader = shader
    end
 
+   if self.rendering then
+      love.graphics.setShader(self.shader)
+   end
+
    return sendCamera(self)
 end
 

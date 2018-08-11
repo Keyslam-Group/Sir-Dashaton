@@ -6,9 +6,16 @@ local World  = require("src.world")
 
 local Enemy = Class("Enemy", Entity)
 Enemy.isEnemy = true
-Enemy.image = love.graphics.newImage("assets/skeleton1.png")
+Enemy.image = love.graphics.newArrayImage({
+   "assets/skeleton0.png",
+   "assets/skeleton1.png",
+   "assets/skeleton2.png",
+})
 Enemy.batch = Lovox.newVoxelBatch(Enemy.image, 48, 100, "dynamic")
 
+Enemy.states = {
+
+}
 
 function Enemy:initialize(...)
    Entity.initialize(self, ...)
@@ -19,6 +26,16 @@ function Enemy:initialize(...)
    self.id = self.batch:add(self.position.x, self.position.y, self.position.z,  -math.pi/2, 2)
 end
 
+function Enemy:idle()
+
+end
+
+function Enemy:onHit()
+   self.isAlive = false
+
+   return true
+end
+
 function Enemy:onDeath()
    Entity.onDeath(self)
    self.batch:setTransformation(self.id, 0, 0, 0, 0)
@@ -27,8 +44,7 @@ end
 function Enemy:update(dt)
    Entity.update(self, dt)
 
-   self.position.y = 500 + math.cos(love.timer.getTime() + self.id) * 100
-   self.rotation = love.timer.getTime() + (self.id / 10)
+   Enemy.batch:setAnimationFrame(self.id, love.math.random(0, 2))
 
    self.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
    self.shape:moveTo(self.position.x, self.position.y)

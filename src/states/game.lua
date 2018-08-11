@@ -1,5 +1,6 @@
 local Class = require("lib.class")
 local Lovox = require("lib.lovox")
+local Timer = require("lib.timer")
 
 local World = require("src.world")
 
@@ -18,6 +19,8 @@ function Game:leave()
 end
 
 function Game:update(dt)
+   Timer.update(dt)
+   
    for _, entity in ipairs(self.entities) do
       entity:update(dt)
    end

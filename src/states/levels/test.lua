@@ -36,13 +36,19 @@ end
 
 function Test:render()
    self.camera:clear(0, 0, 0, 0)
-   Player:render()
+
+   self.camera:setShader("animation")
    Enemy:render()
+
+   self.camera:setShader("default")
+   Player:render()
    Wall:render()
 end
 
 function Test:draw()
    Game.draw(self)
+
+   love.graphics.print("Combo: " ..self.entities[1].chain)
 end
 
 return Test

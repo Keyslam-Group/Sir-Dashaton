@@ -2,6 +2,7 @@ local Class = require("lib.class")
 local Lovox = require("lib.lovox")
 local Vec3  = require("lib.vec3")
 local Input = require("lib.input")
+local Timer = require("lib.timer")
 
 local Entity = require("src.entity")
 local World  = require("src.world")
@@ -16,13 +17,12 @@ Player.maxVelocity  = 350
 Player.friction     = 15
 
 Player.dashing      = false
-Player.dashTarget   = Vec3(0, 0, 0)
-Player.dashSpeed    = 3000
-Player.maxDashDist  = 400
-Player.effDashDist  = 0
-Player.curDashDist  = 0
+Player.dashSpeed    = 4500
 Player.curDashSpeed = 0
 Player.dashFriction = 10
+
+Player.chain = 0
+Player.chainTimer = nil
 
 function Player:initialize(...)
    Entity.initialize(self, ...)
@@ -81,7 +81,19 @@ function Player:update(dt)
 
       if self.dashing then
          if other.isEnemy then
-            other.isAlive = false
+            if other:onHit() then
+               self.chain = self.chain + 1
+
+               if self.timer then
+                  Timer.cancel(self.timer)
+               end
+
+               self.timer = Timer.after(0.5, function()
+                  self.chain = 0
+                  self.timer = nil
+               end)
+            end
+
             self.dashing = false
          end
 
@@ -97,16 +109,8 @@ function Player:update(dt)
    -- Activate dash
    if not self.dashing then
       if self.controller:pressed("dash") then
-         -- TODO Clamp between dash position and max dist. Maybe a short minimum distance as well?
-         self.curDashDist = 0
-         self.curDashSpeed = self.dashSpeed
-
-         self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.curDashSpeed
-         self.effDashDist = self.maxDashDist -- Clamp this
+         self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.dashSpeed
          self.dashing = true
-
-         --local dist = self.dashTarget - self.position 
-         --self.velocity = Vec3(dist.x, dist.y, 0):normalize() * self.dashSpeed
       end
    end
 
