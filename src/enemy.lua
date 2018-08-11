@@ -6,7 +6,7 @@ local World  = require("src.world")
 
 local Enemy = Class("Enemy", Entity)
 Enemy.isEnemy = true
-Enemy.image = love.graphics.newImage("assets/skeleton.png")
+Enemy.image = love.graphics.newImage("assets/skeleton1.png")
 Enemy.batch = Lovox.newVoxelBatch(Enemy.image, 48, 100, "dynamic")
 
 

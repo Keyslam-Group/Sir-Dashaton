@@ -8,7 +8,7 @@ local World  = require("src.world")
 
 local Player = Class("Player", Entity)
 Player.isPlayer = true
-Player.image = love.graphics.newImage("assets/skeleton.png")
+Player.image = love.graphics.newImage("assets/skeleton1-stab.png")
 Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
 
 Player.acceleration = 5000
@@ -19,6 +19,8 @@ Player.dashing     = false
 Player.dashTarget  = Vec3(0, 0, 0)
 Player.dashSpeed   = 1500
 Player.maxDashDist = 400
+Player.effDashDist = 0
+Player.curDashDist = 0
 
 function Player:initialize(...)
    Entity.initialize(self, ...)
@@ -70,10 +72,11 @@ function Player:update(dt)
       if self.dashing then
          if other.isEnemy then
             other.isAlive = false
+            self.dashing = false
          end
 
-         -- TODO Dont stop dash if separating vector is small enough. Just slide past it
-         self.dashing = false
+         local s = 2 * (self.velocity.x * sep_vec.x + self.velocity.y * sep_vec.y) / (sep_vec.x * sep_vec.x + sep_vec.y * sep_vec.y)
+         self.velocity = -Vec3(s * sep_vec.x - self.velocity.x, s * sep_vec.y - self.velocity.y, 0)
       end
    end
    self.shape:moveTo(self.position.x, self.position.y)
@@ -85,19 +88,22 @@ function Player:update(dt)
    if not self.dashing then
       if self.controller:pressed("dash") then
          -- TODO Clamp between dash position and max dist. Maybe a short minimum distance as well?
-         self.dashTarget = self.position + (Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.maxDashDist)
+         self.curDashDist = 0
+
+         self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.dashSpeed
+         self.effDashDist = self.maxDashDist -- Clamp this
          self.dashing = true
-         self.velocity = Vec3(0, 0, 0)
+
+         --local dist = self.dashTarget - self.position 
+         --self.velocity = Vec3(dist.x, dist.y, 0):normalize() * self.dashSpeed
       end
    end
 
    -- Dashing
    if self.dashing then
-      local dist = self.dashTarget - self.position 
-      if dist:len() > 1 then
-         self.velocity = Vec3(dist.x, dist.y, 0):normalize() * self.dashSpeed
-      else
-         self.velocity = Vec3(0, 0, 0)
+      self.curDashDist = self.curDashDist + self.velocity:len() * dt
+      
+      if self.curDashDist >= self.effDashDist then
          self.dashing = false
       end
    end
