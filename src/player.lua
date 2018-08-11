@@ -8,8 +8,8 @@ local World  = require("src.world")
 
 local Player = Class("Player", Entity)
 Player.isPlayer = true
-Player.image = love.graphics.newImage("assets/player_placeholder.png")
-Player.batch = Lovox.newVoxelBatch(Player.image, 20, 1, "dynamic")
+Player.image = love.graphics.newImage("assets/skeleton.png")
+Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
 
 Player.acceleration = 5000
 Player.maxVelocity  = 250
@@ -36,7 +36,7 @@ function Player:initialize(...)
       dash      = {"mouse:1"},
    })
    
-   self.batch:add(self.position.x, self.position.y, self.position.z, 0, 2)
+   self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
 end
 
 function Player:update(dt)
@@ -62,10 +62,16 @@ function Player:update(dt)
    -- Collision
    self.shape:moveTo(self.position.x, self.position.y)
    for other, sep_vec in pairs(World:collisions(self.shape)) do
+      other = other.obj
+
       self.position.x = self.position.x + sep_vec.x
       self.position.y = self.position.y + sep_vec.y
 
       if self.dashing then
+         if other.isEnemy then
+            other.isAlive = false
+         end
+
          -- TODO Dont stop dash if separating vector is small enough. Just slide past it
          self.dashing = false
       end
@@ -73,13 +79,13 @@ function Player:update(dt)
    self.shape:moveTo(self.position.x, self.position.y)
 
    -- Rotation
-   self.rotation = math.atan2(love.mouse.getY() - self.position.y, -(love.mouse.getX() - self.position.x))
+   self.rotation = math.atan2(love.mouse.getY() - self.position.y, love.mouse.getX() - self.position.x)
 
    -- Activate dash
    if not self.dashing then
       if self.controller:pressed("dash") then
          -- TODO Clamp between dash position and max dist. Maybe a short minimum distance as well?
-         self.dashTarget = self.position + (Vec3(-math.cos(self.rotation), math.sin(self.rotation), 0) * self.maxDashDist)
+         self.dashTarget = self.position + (Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.maxDashDist)
          self.dashing = true
          self.velocity = Vec3(0, 0, 0)
       end
@@ -97,7 +103,7 @@ function Player:update(dt)
    end
 
    -- Update data
-   self.batch:setTransformation(1, self.position.x, self.position.y, self.position.z, self.rotation, 2)
+   self.batch:setTransformation(1, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
    self.controller:endFrame()
 end
 

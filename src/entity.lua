@@ -1,8 +1,11 @@
 local Class = require("lib.class")
 local Vec3  = require("lib.vec3")
 
+local World = require("src.world")
+
 local Entity = Class("Entity")
 Entity.isEntity = true
+Entity.isAlive  = true
 
 function Entity:initialize(position, rotation, velocity)
    self.position = position or Vec3(0, 0, 0)
@@ -10,6 +13,12 @@ function Entity:initialize(position, rotation, velocity)
    self.velocity = velocity or Vec3(0, 0, 0)
 
    self.shape = nil
+end
+
+function Entity:onDeath()
+   if self.shape then
+      World:remove(self.shape)
+   end
 end
 
 function Entity:update(dt)

@@ -138,7 +138,7 @@ function Transform:setTransformation(x, y, z, angle, sx, sy, sz, ox, oy, oz, kx,
    sy         = sy or sx
    sz         = sz or sy
 
-   local s, c = cos(angle or 0), sin(angle or 0)
+   local s, c = sin(angle or 0), cos(angle or 0)
 
    -- matrix multiplication carried out on paper:
    -- |1 0 0 x| |c -s 0 0| |sx  0 0 0| | 1 ky 0 0| |1 0 0 -ox|

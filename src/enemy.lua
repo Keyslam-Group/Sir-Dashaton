@@ -6,8 +6,8 @@ local World  = require("src.world")
 
 local Enemy = Class("Enemy", Entity)
 Enemy.isEnemy = true
-Enemy.image = love.graphics.newImage("assets/enemy_placeholder.png")
-Enemy.batch = Lovox.newVoxelBatch(Enemy.image, 13, 100, "dynamic")
+Enemy.image = love.graphics.newImage("assets/skeleton.png")
+Enemy.batch = Lovox.newVoxelBatch(Enemy.image, 48, 100, "dynamic")
 
 
 function Enemy:initialize(...)
@@ -16,13 +16,21 @@ function Enemy:initialize(...)
    self.shape = World:circle(self.position.x, self.position.y, 20)
    self.shape.obj = self
 
-   self.id = self.batch:add(self.position.x, self.position.y, self.position.z, 0, 2)
+   self.id = self.batch:add(self.position.x, self.position.y, self.position.z,  -math.pi/2, 2)
+end
+
+function Enemy:onDeath()
+   Entity.onDeath(self)
+   self.batch:setTransformation(self.id, 0, 0, 0, 0)
 end
 
 function Enemy:update(dt)
    Entity.update(self, dt)
 
-   self.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation, 2)
+   self.position.y = 500 + math.cos(love.timer.getTime() + self.id) * 100
+   self.rotation = love.timer.getTime() + (self.id / 10)
+
+   self.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
    self.shape:moveTo(self.position.x, self.position.y)
 end
 

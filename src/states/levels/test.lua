@@ -21,10 +21,10 @@ function Test:enter()
       self.entities[i] = Wall(Vec3(i * 200 - 170, 200, 0))
    end
 
-   self.entities[#self.entities + 1] = Enemy(Vec3(100, 400, 0))
-   self.entities[#self.entities + 1] = Enemy(Vec3(400, 300, 0))
-   self.entities[#self.entities + 1] = Enemy(Vec3(700, 500, 0))
-   self.entities[#self.entities + 1] = Enemy(Vec3(350, 600, 0))
+   for i = 1, 10 do
+   --self.entities[#self.entities + 1] = Enemy(Vec3(100, 400, 0))
+      self.entities[#self.entities + 1] = Enemy(Vec3(i * 100, 300, 0))
+   end
 end
 
 function Test:leave()

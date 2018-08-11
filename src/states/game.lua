@@ -21,6 +21,13 @@ function Game:update(dt)
    for _, entity in ipairs(self.entities) do
       entity:update(dt)
    end
+
+   for i = #self.entities, 1, -1 do
+      if not self.entities[i].isAlive then
+         self.entities[i]:onDeath()
+         table.remove(self.entities, i)
+      end
+   end
 end
 
 function Game:render()
