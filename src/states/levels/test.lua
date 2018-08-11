@@ -18,7 +18,7 @@ end
 function Test:leave()
 end
 
-function Test:update()
+function Test:update(dt)
    Game.update(self, dt)
 end
 
