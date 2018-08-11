@@ -1,25 +1,18 @@
-local Vec3 = require("lib.vec3")
+local Class = require("lib.class")
+local Vec3  = require("lib.vec3")
 
-local Entity = {}
-Entity.__index = Entity
+local Entity = Class("Entity")
 
-function Entity.new(position, rotation)
-   local self = setmetatable({}, Entity)
-
+function Entity:initialize(position, rotation)
    self.position = position or Vec3(0, 0, 0)
    self.rotation = rotation or 0
-
-   return self
 end
 
 function Entity:update(dt)
 end
 
 function Entity:draw()
-   print("step 1")
-   love.graphics.setColor(1, 1, 1)
+   love.graphics.setColor(1, 0, 1)
 end
 
-return setmetatable(Entity, {
-   __call = function(_, ...) return Entity.new(...) end,
-})
+return Entity

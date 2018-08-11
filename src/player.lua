@@ -1,22 +1,22 @@
+local Class = require("lib.class")
+local Lovox = require("lib.lovox")
+
 local Entity = require("src.entity")
 
-local Player = setmetatable({
+local Player = Class("Player", Entity)
+Player.image = love.graphics.newImage("assets/player_placeholder.png")
+Player.batch = Lovox.newVoxelBatch(Player.image, 20, 1, "dynamic")
 
-}, Entity)
-Player.__index = Player
+function Player:initialize()
+   Entity.initialize(self)
 
-function Player.new(...)
-   local self = setmetatable(Entity.new(...), Player)
-
-   return self
+   self.batch:add(200, 200, 0, 0, 4)
 end
 
 function Player:draw()
    Entity.draw(self)
 
-   love.graphics.circle("fill", 100, 100, 20)
+   self.batch:draw()
 end
 
-return setmetatable(Player, {
-   __call = function(_, ...) return Player.new(...) end,
-})
+return Player
