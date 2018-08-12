@@ -24,8 +24,6 @@ end
 
 function Entity:update(dt)
    if self.velocity.x ~= 0 or self.velocity.y ~= 0 or self.velocity.z ~= 0 then
-      self.position:add(self.velocity * dt)
-
       if self.shape then
          self.shape:moveTo(self.position.x, self.position.y)
       end
@@ -38,7 +36,6 @@ end
 
 function Entity:debugDraw()
    if self.shape then
-      love.graphics.setColor(1, 1, 1)
       self.shape:draw()
    end
 end

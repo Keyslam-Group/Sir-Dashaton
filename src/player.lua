@@ -3,13 +3,16 @@ local Lovox = require("lib.lovox")
 local Vec3  = require("lib.vec3")
 local Input = require("lib.input")
 local Timer = require("lib.timer")
+local Trail = require("lib.trail")
 
-local Entity = require("src.entity")
-local World  = require("src.world")
+local Entity   = require("src.entity")
+local World    = require("src.world")
 
 local Player = Class("Player", Entity)
 Player.isPlayer = true
-Player.image = love.graphics.newImage("assets/skeleton1.png")
+Player.image = love.graphics.newArrayImage({
+   "assets/knight.png"
+})
 Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
 
 Player.acceleration = 5000
@@ -24,7 +27,19 @@ Player.dashFriction = 10
 Player.chain = 0
 Player.chainTimer = nil
 
-function Player:initialize(...)
+Player.animations = {
+   idle    = {1},
+   walking = {1, 1, 1, 1},
+   stab    = {1},
+}
+Player.animTimer = 0
+Player.animIndex = 1
+Player.state     = "idle"
+
+Player.trails = {}
+
+
+function Player:initialize(entities, ...)
    Entity.initialize(self, ...)
    self.shape = World:circle(self.position.x, self.position.y, 20)
    self.shape.obj = self
@@ -41,6 +56,32 @@ function Player:initialize(...)
    })
    
    self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
+
+   self.entities = entities
+end
+
+
+function Player:idle(dt)
+   return "idle"
+end
+
+function Player:walking(dt)
+   if self.animIndex > 4 then
+      self.animIndex = 1
+   end
+
+   self.position = self.position + (Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * 0.1)
+
+   return "walking"
+end
+
+function Player:stab(dt)
+   if self.animIndex > 2 then
+      self.animIndex = 1
+      return "stab"
+   end
+
+   return "stab"
 end
 
 function Player:update(dt)
@@ -111,6 +152,20 @@ function Player:update(dt)
       if self.controller:pressed("dash") then
          self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.dashSpeed
          self.dashing = true
+
+         local trail = Trail:new({
+            type = "mesh",
+            content = {
+               source = love.graphics.newImage("assets/trail.png"),
+               width = 48,
+               mode = "stretch",
+            },
+            duration = 0.4,
+         })
+         trail:setMotion(0, 0)
+         trail:setPosition(self.position.x, self.position.y - 32)
+   
+         table.insert(self.trails, 1, trail)
       end
    end
 
@@ -119,9 +174,15 @@ function Player:update(dt)
       if self.velocity:len() < 30 then
          self.dashing = false
       end
+
+      self.trails[1]:setMotion(0, 0)
+      self.trails[1]:setPosition(self.position.x, self.position.y - 32)
    end
 
    -- Update data
+   self.state = self[self.state](self, dt)
+   Player.batch:setAnimationFrame(1, self.animations[self.state][self.animIndex])
+
    self.batch:setTransformation(1, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
    self.controller:endFrame()
 end

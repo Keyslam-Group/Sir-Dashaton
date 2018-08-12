@@ -1,5 +1,5 @@
 function love.conf(t)
-   t.identity              = "Ludum Dare 42"
+   t.identity              = "Dashaton"
    t.appendidentity        = false
    t.version               = "11.1"
    t.console               = true
@@ -9,7 +9,7 @@ function love.conf(t)
 
    t.audio.mixwithsystem = true
 
-   t.window.title          = "Ludum Dare 42"
+   t.window.title          = "Dashaton LD 42"
    t.window.icon           = nil
    t.window.width          = 1280
    t.window.height         = 720

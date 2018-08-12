@@ -17,13 +17,6 @@ function Wall:initialize(...)
    self.id = Wall.batch:add(self.position.x, self.position.y, self.position.z, self.rotation, 2)
 end
 
-function Wall:update(dt)
-   Entity.update(self, dt)
-   --self.rotation = self.rotation + dt
-   self.shape:setRotation(self.rotation)
-   self.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, -self.rotation, 2)
-end
-
 function Wall.render()
    Wall.batch:draw()
 end
