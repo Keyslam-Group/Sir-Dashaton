@@ -57,7 +57,7 @@ function Camera:resize(w, h)
    }
 
    self.color = love.graphics.newCanvas(w, h, {format = "rgba8"})
-   self.depth = love.graphics.newCanvas(w, h, {format = "depth16"})
+   self.depth = love.graphics.newCanvas(w, h, {format = "depth24"})
 
    self.canvas = {self.color, depthstencil = self.depth}
 

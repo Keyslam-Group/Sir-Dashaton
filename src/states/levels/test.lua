@@ -81,6 +81,8 @@ function Test:enter()
    self.entities[#self.entities + 1] = Chair(Vec3(656, 300, 0), math.pi * 0.5)
 
    self.entities[#self.entities + 1] = Table(true, Vec3(578, 700, 0))
+
+   self.camera:scale(1, 0.5, 1)
 end
 
 
@@ -99,7 +101,10 @@ function Test:update(dt)
       self.camera:rotate(-dt / 2)
    end
 
+
    self.camera:translate(-640, -360)
+
+   
 end
 
 function Test:render()
@@ -128,6 +133,14 @@ function Test:draw()
    love.graphics.setColor(1, 1, 1, 1)
    love.graphics.print("Combo: " ..self.entities[1].chain)
    love.graphics.print("FPS: " ..love.timer.getFPS(), 0, 10)
+end
+
+function Test:keypressed(key)
+   if key == "o" then
+      self.camera:scale(1, 1/2, 1/2)
+   elseif key == "p" then
+      self.camera:scale(1, 2, 1 * 2)
+   end
 end
 
 return Test
