@@ -13,7 +13,7 @@ function DashParticle:initialize(...)
 
    self.id = DashParticle.batch:add(self.position.x, self.position.y, self.position.z, self.rotation, 6)
 
-   self.maxlife  = 0.75
+   self.maxlife  = 2
    self.lifeleft = love.math.random() * self.maxlife
    self.rotSpeed = (love.math.random() * 2 - 1) * 4
 end

@@ -170,7 +170,6 @@ function Player:update(dt)
 
    -- Rotation
    local mx, my = self.camera:inverseTransformPoint(love.mouse.getX(), love.mouse.getY(), 0)
-   print(mx, my, love.mouse.getX(), love.mouse.getY())
    self.rotation = math.atan2(my - self.position.y, mx - self.position.x)
 
    -- Activate dash
@@ -194,7 +193,7 @@ function Player:update(dt)
       local perp = self.velocity:perpendicular():normalize() * (love.math.random(0, 1) * 2 - 1)
       perp.z = love.math.random() * 2 - 1
 
-      self.entities[#self.entities + 1] = DashParticle(Vec3(self.position.x, self.position.y, love.math.random() * 64), 0, perp * love.math.random(0, 40) + (self.velocity * 0.025))
+      self.entities[#self.entities + 1] = DashParticle(Vec3(self.position.x, self.position.y, love.math.random() * 64), 0, perp * love.math.random(0, 20) + (self.velocity * 0.025))
    end
 
    -- Update data

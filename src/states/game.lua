@@ -3,6 +3,7 @@ local Lovox = require("lib.lovox")
 local Timer = require("lib.timer")
 
 local World = require("src.world")
+local Combo = require("src.combo")
 
 local Game = Class("Game")
 
@@ -54,6 +55,8 @@ function Game:draw()
    love.graphics.setColor(1, 1, 1, 0.25)
    World._hash:draw("line", false, true)
    ]]
+
+   Combo.draw(self.entities[1].chain)
 end
 
 return Game

@@ -32,6 +32,7 @@ end
 function Hole.render()
    love.graphics.setColor(0.4, 0.4, 0.4)
    Hole.wallBatch:draw()
+   love.graphics.setColor(0.6, 0.6, 0.6)
    Hole.tileBatch:draw()
    love.graphics.setColor(1, 1, 1)
 end

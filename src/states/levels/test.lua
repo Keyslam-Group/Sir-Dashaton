@@ -18,6 +18,7 @@ local Hole     = require("src.hole")
 local DashParticle = require("src.dashParticle")
 
 
+
 local Test = Class("Test", Game)
 
 function Test:initialize()
@@ -27,63 +28,65 @@ end
 function Test:enter()
    self.entities[1] = Player(self.entities, self.camera, Vec3(200, 500, 0))
 
-   for i = 2, 11 do
-      self.entities[i] = Wall(Vec3(i * 96 - 48, 200, 0), love.math.random(0, 3) * math.pi/2)
+   for x = 1, 12 do
+      self.entities[#self.entities + 1] = Tile(Vec3(x * 96, 84 + 1 * 96, -3))
    end
 
-   for i = 3, 11, 2 do
-      self.entities[#self.entities + 1] = Column(Vec3(i * 96 - 96, 258, 0))
-   end
-
-   for i = 3, 9, 2 do
-      self.entities[#self.entities + 1] = Flag(Vec3(i * 96, 256, 0))
-   end
-
-   for i = 1, 2 do
-      self.entities[#self.entities + 1] = Enemy(Vec3(i * 100, 300, 0), math.pi/3)
-   end
-   for i = 7, 10 do
-      self.entities[#self.entities + 1] = Enemy(Vec3(i * 100, 300, 0), math.pi/3)
-   end
-
-   self.entities[#self.entities + 1] = Torch(Vec3(144, 260, 0))
-   self.entities[#self.entities + 1] = Torch(Vec3(1010, 260, 0))
-
-   for x = 1, 10 do
-      for y = 1, 10 do
-         if x > 4 and x < 8 and (y == 4 or y == 5) then
-            
-         else
-            self.entities[#self.entities + 1] = Tile(Vec3(x * 96 + 48, y * 96 + 96, -3), math.pi/2)
-         end
+   for x = 1, 5 do
+      for y = 2, 5 do
+         self.entities[#self.entities + 1] = Tile(Vec3(x * 96, 84 + y * 96, -3))
       end
    end
 
-   self.entities[#self.entities + 1] = Hole({
-      true, false, true, false, true,
-   }, Vec3(5 * 96 + 48, 4 * 96 + 96, -130))
-   self.entities[#self.entities + 1] = Hole({
-      true, false, false, false, true,
-   }, Vec3(6 * 96 + 48, 4 * 96 + 96, -130))
-   self.entities[#self.entities + 1] = Hole({
-      true, false, false, true, true,
-   }, Vec3(7 * 96 + 48, 4 * 96 + 96, -130))
+   for x = 8, 12 do
+      for y = 2, 3 do
+         self.entities[#self.entities + 1] = Tile(Vec3(x * 96, 84 + y * 96, -3))
+      end
+   end
 
-   self.entities[#self.entities + 1] = Hole({
-      false, true, true, false, true,
-   }, Vec3(5 * 96 + 48, 5 * 96 + 96, -130))
-   self.entities[#self.entities + 1] = Hole({
-      false, true, false, false, true,
-   }, Vec3(6 * 96 + 48, 5 * 96 + 96, -130))
-   self.entities[#self.entities + 1] = Hole({
-      false, true, false, true, true,
-   }, Vec3(7 * 96 + 48, 5 * 96 + 96, -130))
+   for i = 1, 12 do
+      self.entities[#self.entities + 1] = Wall(Vec3(i * 96, 180, 0), love.math.random(0, 3) * math.pi/2)
+   end
 
-   self.entities[#self.entities + 1] = Chair(Vec3(500, 300, 0), math.pi * 1.5)
-   self.entities[#self.entities + 1] = Table(true, Vec3(578, 300, 0))
-   self.entities[#self.entities + 1] = Chair(Vec3(656, 300, 0), math.pi * 0.5)
+   for i = 1, 11, 2 do
+      self.entities[#self.entities + 1] = Column(Vec3(i * 96 + 48, 238, 0))
+   end
 
-   self.entities[#self.entities + 1] = Table(true, Vec3(578, 700, 0))
+   self.entities[#self.entities + 1] = Hole({true, false, true, false, true}, Vec3(6 * 96, 180 + 1 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, true, true}, Vec3(7 * 96, 180 + 1 * 96, -130))
+
+   self.entities[#self.entities + 1] = Hole({false, false, true, false, true}, Vec3(6 * 96, 180 + 2 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, false, true, true}, Vec3(7 * 96, 180 + 2 * 96, -130))
+
+   self.entities[#self.entities + 1] = Hole({false, false, true, false, true}, Vec3(6 * 96, 180 + 3 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, true, false, true}, Vec3(6 * 96, 180 + 4 * 96, -130))
+
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(8 * 96, 180 + 3 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(9 * 96, 180 + 3 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(10 * 96, 180 + 3 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(11 * 96, 180 + 3 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(12 * 96, 180 + 3 * 96, -130))
+
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(4 * 96, 180 + 5 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(3 * 96, 180 + 5 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(2 * 96, 180 + 5 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(1 * 96, 180 + 5 * 96, -130))
+
+   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(7 * 96, 180 + 3 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(7 * 96, 180 + 4 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(8 * 96, 180 + 4 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(9 * 96, 180 + 4 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(10 * 96, 180 + 4 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(11 * 96, 180 + 4 * 96, -130))
+   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(12 * 96, 180 + 4 * 96, -130))
+   
+   
+   self.entities[#self.entities + 1] = Enemy(Vec3(120, 280, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Vec3(486, 280, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Vec3(486, 550, 0), math.pi/2)
+
+   self.entities[#self.entities + 1] = Enemy(Vec3(800, 280, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Vec3(1100, 380, 0), math.pi/2)
 end
 
 
@@ -102,10 +105,7 @@ function Test:update(dt)
       self.camera:rotate(-dt / 2)
    end
 
-
    self.camera:translate(-640, -360)
-
-   
 end
 
 function Test:render()
@@ -134,14 +134,8 @@ function Test:draw()
    love.graphics.setColor(1, 1, 1, 1)
    love.graphics.print("Combo: " ..self.entities[1].chain)
    love.graphics.print("FPS: " ..love.timer.getFPS(), 0, 10)
-end
 
-function Test:keypressed(key)
-   if key == "o" then
-      self.camera:scale(1, 1, 1/2)
-   elseif key == "p" then
-      self.camera:scale(1, 1, 1 * 2)
-   end
+   
 end
 
 return Test

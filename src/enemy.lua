@@ -8,9 +8,9 @@ local World  = require("src.world")
 local Enemy = Class("Enemy", Entity)
 Enemy.isEnemy = true
 Enemy.image = love.graphics.newArrayImage({
-   "assets/knight-walk1.png",
-   "assets/knight.png",
-   "assets/knight-walk2.png",
+   "assets/skeleton0.png",
+   "assets/skeleton1.png",
+   "assets/skeleton2.png",
    "assets/skeleton1-stab.png"
 })
 Enemy.batch = Lovox.newVoxelBatch(Enemy.image, 48, 100, "dynamic")
@@ -22,7 +22,7 @@ Enemy.animations = {
 }
 Enemy.animTimer = 0
 Enemy.animIndex = 1
-Enemy.state     = "walking"
+Enemy.state     = "idle"
 
 function Enemy:initialize(...)
    Entity.initialize(self, ...)
@@ -35,6 +35,10 @@ end
 
 function Enemy:idle(dt)
    Enemy.batch:setAnimationFrame(self.id, 1)
+
+   if self.animIndex > 1 then
+      self.animIndex = 1
+   end
 
    return "idle"
 end
