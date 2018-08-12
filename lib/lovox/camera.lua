@@ -13,14 +13,14 @@ Camera.__index = Camera
 -- @returns A new Camera object.
 function Camera.new(w, h)
    return setmetatable({
-      shader       = Camera.defaultShader,
-      color        = nil,
-      depth        = nil,
-      canvas       = nil,
-      rendering    = false,
-      transform    = Transform.new():reset(),
-      dirtyInverse = false,
-      inverse      = Transform.new():reset()
+      shader         = Camera.defaultShader,
+      color          = nil,
+      depth          = nil,
+      canvas         = nil,
+      rendering      = false,
+      transform      = Transform.new():reset(),
+      dirtyTransform = true,
+      loveTransform  = love.math.newTransform()
    }, Camera):resize(w, h)
 end
 
@@ -96,7 +96,7 @@ end
 -- @returns self
 function Camera:translate(tx, ty, tz)
    self.transform:translate(tx, ty, tz)
-   self.dirtyInverse = true
+   self.dirtyTransform = true
    return sendCamera(self)
 end
 
@@ -105,7 +105,7 @@ end
 -- @returns self
 function Camera:scale(sx, sy, sz)
    self.transform:scale(sx, sy, sz)
-   self.dirtyInverse = true
+   self.dirtyTransform = true
    return sendCamera(self)
 end
 
@@ -114,7 +114,7 @@ end
 -- @returns self
 function Camera:rotate(angle)
    self.transform:rotate(angle)
-   self.dirtyInverse = true
+   self.dirtyTransform = true
    return sendCamera(self)
 end
 
@@ -123,7 +123,7 @@ end
 -- @returns self
 function Camera:shear(kx, ky)
    self.transform:shear(kx, ky)
-   self.dirtyInverse = true
+   self.dirtyTransform = true
    return sendCamera(self)
 end
 
@@ -131,22 +131,26 @@ end
 -- @returns self
 function Camera:origin()
    self.transform:reset()
-   self.inverse:reset()
-   self.dirtyInverse = false
+   self.dirtyTransform = true
    return sendCamera(self)
 end
 
-function Camera:transformPoint(x, y, z)
-   return self.transform:transformPoint(x, y, z)
-end
-
-function Camera:inverseTransformPoint(x, y, z)
-   if self.dirtyInverse then
-      self.transform:invert(self.inverse)
-      self.dirtyInverse = false
+function Camera:transformPoint(x, y)
+   if self.dirtyTransform then
+      local love, lovox = self.loveTransform, self.transform
+      love:setMatrix(lovox:getMatrix())
    end
 
-   return self.inverse:transformPoint(x, y, z)
+   return self.loveTransform:transformPoint(x, y)
+end
+
+function Camera:inverseTransformPoint(x, y)
+   if self.dirtyTransform then
+      local love, lovox = self.loveTransform, self.transform
+      love:setMatrix(lovox:getMatrix())
+   end
+
+   return self.loveTransform:inverseTransformPoint(x, y)
 end
 
 local function clear(self, r, g, b, a)
