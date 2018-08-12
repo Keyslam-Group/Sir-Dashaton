@@ -20,9 +20,9 @@ Player.maxVelocity  = 350
 Player.friction     = 15
 
 Player.dashing      = false
-Player.dashSpeed    = 4500
+Player.dashSpeed    = 2500
 Player.curDashSpeed = 0
-Player.dashFriction = 10
+Player.dashFriction = 5
 
 Player.chain = 0
 Player.chainTimer = nil

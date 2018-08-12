@@ -40,7 +40,6 @@ function Test:enter()
    end
 
    for i = 1, 10 do
-   --self.entities[#self.entities + 1] = Enemy(Vec3(100, 400, 0))
       self.entities[#self.entities + 1] = Enemy(Vec3(i * 100, 300, 0), math.pi/3)
    end
 

@@ -1,5 +1,6 @@
 love.graphics.setDefaultFilter("nearest", "nearest", 1)
 
+local Steady = require("lib.steady")
 local Gamestate = require("lib.gamestate")
 
 local Game = require("src.states.game")
