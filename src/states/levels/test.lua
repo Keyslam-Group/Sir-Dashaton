@@ -15,6 +15,8 @@ local Table    = require("src.table")
 local Tile     = require("src.tile")
 local Torch    = require("src.torch")
 local Hole     = require("src.hole")
+local DashParticle = require("src.dashParticle")
+
 
 local Test = Class("Test", Game)
 
@@ -30,7 +32,7 @@ function Test:enter()
    end
 
    for i = 3, 11, 2 do
-      self.entities[#self.entities + 1] = Column(Vec3(i * 96 - 96, 256, 0))
+      self.entities[#self.entities + 1] = Column(Vec3(i * 96 - 96, 258, 0))
    end
 
    for i = 3, 9, 2 do
@@ -50,7 +52,7 @@ function Test:enter()
          if x > 4 and x < 8 and y == 4 then
             
          else
-            self.entities[#self.entities + 1] = Tile(Vec3(x * 96 + 48, y * 96 + 96, -1))
+            self.entities[#self.entities + 1] = Tile(Vec3(x * 96 + 48, y * 96 + 96, -1), math.pi/2)
          end
       end
    end
@@ -106,6 +108,7 @@ function Test:render()
    Flag:render()
    Torch:render()
    Hole:render()
+   DashParticle:render()
 end
 
 function Test:draw()

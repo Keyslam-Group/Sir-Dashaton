@@ -41,9 +41,11 @@ function Game:draw()
       entity:draw()
    end
 
+   
    self.camera:renderTo(self.render, self)
    self.camera:render()
 
+   --[[
    love.graphics.setColor(1, 0, 0, 0.5)
    for _, entity in ipairs(self.entities) do
       entity:debugDraw()
@@ -51,6 +53,7 @@ function Game:draw()
 
    love.graphics.setColor(1, 1, 1, 0.25)
    World._hash:draw("line", false, true)
+   ]]
 end
 
 return Game

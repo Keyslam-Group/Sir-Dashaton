@@ -8,7 +8,6 @@ Entity.isEntity = true
 Entity.isAlive  = true
 
 function Entity:initialize(position, rotation, velocity)
-   print(rotation)
    self.position = position or Vec3(0, 0, 0)
    self.rotation = rotation or 0
    self.velocity = velocity or Vec3(0, 0, 0)

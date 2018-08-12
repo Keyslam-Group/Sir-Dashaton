@@ -3,10 +3,10 @@ local Lovox = require("lib.lovox")
 local Vec3  = require("lib.vec3")
 local Input = require("lib.input")
 local Timer = require("lib.timer")
-local Trail = require("lib.trail")
 
 local Entity   = require("src.entity")
 local World    = require("src.world")
+local DashParticle = require("src.dashParticle")
 
 local Player = Class("Player", Entity)
 Player.isPlayer = true
@@ -36,8 +36,7 @@ Player.animTimer = 0
 Player.animIndex = 1
 Player.state     = "idle"
 
-Player.trails = {}
-
+Player.dashDist = 0
 
 function Player:initialize(entities, ...)
    Entity.initialize(self, ...)
@@ -152,20 +151,6 @@ function Player:update(dt)
       if self.controller:pressed("dash") then
          self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.dashSpeed
          self.dashing = true
-
-         local trail = Trail:new({
-            type = "mesh",
-            content = {
-               source = love.graphics.newImage("assets/trail.png"),
-               width = 48,
-               mode = "stretch",
-            },
-            duration = 0.4,
-         })
-         trail:setMotion(0, 0)
-         trail:setPosition(self.position.x, self.position.y - 32)
-   
-         table.insert(self.trails, 1, trail)
       end
    end
 
@@ -174,9 +159,15 @@ function Player:update(dt)
       if self.velocity:len() < 30 then
          self.dashing = false
       end
+   end
 
-      self.trails[1]:setMotion(0, 0)
-      self.trails[1]:setPosition(self.position.x, self.position.y - 32)
+   self.dashDist = self.dashDist + self.velocity:len() * dt
+   while self.dashDist > 10 do
+      self.dashDist = self.dashDist - 10
+      local perp = self.velocity:perpendicular():normalize() * (love.math.random(0, 1) * 2 - 1)
+      perp.z = love.math.random() * 2 - 1
+
+      self.entities[#self.entities + 1] = DashParticle(Vec3(self.position.x, self.position.y, 32), 0, perp * love.math.random(0, 40) + (self.velocity * 0.025))
    end
 
    -- Update data
