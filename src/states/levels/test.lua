@@ -39,7 +39,10 @@ function Test:enter()
       self.entities[#self.entities + 1] = Flag(Vec3(i * 96, 256, 0))
    end
 
-   for i = 1, 10 do
+   for i = 1, 2 do
+      self.entities[#self.entities + 1] = Enemy(Vec3(i * 100, 300, 0), math.pi/3)
+   end
+   for i = 7, 10 do
       self.entities[#self.entities + 1] = Enemy(Vec3(i * 100, 300, 0), math.pi/3)
    end
 
@@ -81,8 +84,6 @@ function Test:enter()
    self.entities[#self.entities + 1] = Chair(Vec3(656, 300, 0), math.pi * 0.5)
 
    self.entities[#self.entities + 1] = Table(true, Vec3(578, 700, 0))
-
-   self.camera:scale(1, 0.5, 1)
 end
 
 

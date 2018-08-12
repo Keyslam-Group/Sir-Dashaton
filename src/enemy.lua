@@ -44,7 +44,7 @@ function Enemy:walking(dt)
       self.animIndex = 1
    end
 
-   self.position = self.position + (Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * 0.1)
+   self.position = self.position + (Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * 30) * dt
 
    return "walking"
 end
