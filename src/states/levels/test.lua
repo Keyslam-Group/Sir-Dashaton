@@ -25,7 +25,7 @@ function Test:initialize()
 end
 
 function Test:enter()
-   self.entities[1] = Player(self.entities, Vec3(200, 500, 0))
+   self.entities[1] = Player(self.entities, self.camera, Vec3(200, 500, 0))
 
    for i = 2, 11 do
       self.entities[i] = Wall(Vec3(i * 96 - 48, 200, 0), love.math.random(0, 3) * math.pi/2)
@@ -138,20 +138,10 @@ end
 
 function Test:keypressed(key)
    if key == "o" then
-      self.camera:scale(1, 1/2, 1/2)
+      self.camera:scale(1, 1, 1/2)
    elseif key == "p" then
-      self.camera:scale(1, 2, 1 * 2)
+      self.camera:scale(1, 1, 1 * 2)
    end
-
-   if key == "q" then
-      love.event.quit()
-   end
-end
-
-love.mouse.setRelativeMode(true)
-
-function Test:mousemoved(x, y, dx, dy)
-   self.entities[1].rotation = self.entities[1].rotation + (dx / 100)
 end
 
 return Test

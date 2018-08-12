@@ -40,7 +40,7 @@ Player.state     = "idle"
 
 Player.dashDist = 0
 
-function Player:initialize(entities, ...)
+function Player:initialize(entities, camera, ...)
    Entity.initialize(self, ...)
    self.shape = World:circle(self.position.x, self.position.y, 20)
    self.shape.obj = self
@@ -59,6 +59,7 @@ function Player:initialize(entities, ...)
    self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
 
    self.entities = entities
+   self.camera   = camera
 end
 
 
@@ -168,7 +169,9 @@ function Player:update(dt)
    end
 
    -- Rotation
-   --self.rotation = math.atan2(love.mouse.getY() - self.position.y, love.mouse.getX() - self.position.x)
+   local mx, my = self.camera:inverseTransformPoint(love.mouse.getX(), love.mouse.getY(), 0)
+   print(mx, my, love.mouse.getX(), love.mouse.getY())
+   self.rotation = math.atan2(my - self.position.y, mx - self.position.x)
 
    -- Activate dash
    if not self.dashing then
