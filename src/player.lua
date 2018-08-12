@@ -11,7 +11,9 @@ local DashParticle = require("src.dashParticle")
 local Player = Class("Player", Entity)
 Player.isPlayer = true
 Player.image = love.graphics.newArrayImage({
-   "assets/knight.png"
+   "assets/knight-walk1.png",
+   "assets/knight.png",
+   "assets/knight-walk2.png",
 })
 Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
 
@@ -29,7 +31,7 @@ Player.chainTimer = nil
 
 Player.animations = {
    idle    = {1},
-   walking = {1, 1, 1, 1},
+   walking = {2, 1, 0, 1},
    stab    = {1},
 }
 Player.animTimer = 0
@@ -61,6 +63,9 @@ end
 
 
 function Player:idle(dt)
+   if self.animIndex > 1 then
+      self.animIndex = 1
+   end
    return "idle"
 end
 
@@ -68,8 +73,6 @@ function Player:walking(dt)
    if self.animIndex > 4 then
       self.animIndex = 1
    end
-
-   self.position = self.position + (Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * 0.1)
 
    return "walking"
 end
@@ -99,10 +102,14 @@ function Player:update(dt)
       -- Friction and speed clamp
       self.velocity = self.velocity:trim(self.maxVelocity)
       
+      if movementVector:len() > 0 then
+         self.state = "walking"
+      else
+         self.state = "idle"
+         self.animIndex = 1
+      end
    end
 
-   
-   
    -- Move
    self.position = self.position + self.velocity * dt
 
@@ -161,7 +168,7 @@ function Player:update(dt)
    end
 
    -- Rotation
-   self.rotation = math.atan2(love.mouse.getY() - self.position.y, love.mouse.getX() - self.position.x)
+   --self.rotation = math.atan2(love.mouse.getY() - self.position.y, love.mouse.getX() - self.position.x)
 
    -- Activate dash
    if not self.dashing then
@@ -173,7 +180,7 @@ function Player:update(dt)
 
    -- Dashing
    if self.dashing then
-      if self.velocity:len() < 30 then
+      if self.velocity:len() < 100 then
          self.dashing = false
       end
    end
@@ -188,6 +195,13 @@ function Player:update(dt)
    end
 
    -- Update data
+   self.animTimer = self.animTimer + dt
+   if self.animTimer >= 0.1 then
+      self.animTimer = 0
+      self.animIndex = self.animIndex + 1
+   end
+   
+
    self.state = self[self.state](self, dt)
    Player.batch:setAnimationFrame(1, self.animations[self.state][self.animIndex])
 
