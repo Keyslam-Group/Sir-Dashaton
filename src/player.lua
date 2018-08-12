@@ -20,7 +20,7 @@ Player.maxVelocity  = 350
 Player.friction     = 15
 
 Player.dashing      = false
-Player.dashSpeed    = 2500
+Player.dashSpeed    = 2200
 Player.curDashSpeed = 0
 Player.dashFriction = 5
 
