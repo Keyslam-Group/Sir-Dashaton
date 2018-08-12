@@ -49,27 +49,39 @@ function Test:enter()
 
    for x = 1, 10 do
       for y = 1, 10 do
-         if x > 4 and x < 8 and y == 4 then
+         if x > 4 and x < 8 and (y == 4 or y == 5) then
             
          else
-            self.entities[#self.entities + 1] = Tile(Vec3(x * 96 + 48, y * 96 + 96, -1), math.pi/2)
+            self.entities[#self.entities + 1] = Tile(Vec3(x * 96 + 48, y * 96 + 96, -3), math.pi/2)
          end
       end
    end
 
    self.entities[#self.entities + 1] = Hole({
-      true, true, true, false, true,
-   }, Vec3(5 * 96 + 48, 4 * 96 + 96, -128))
+      true, false, true, false, true,
+   }, Vec3(5 * 96 + 48, 4 * 96 + 96, -130))
    self.entities[#self.entities + 1] = Hole({
-      true, true, false, false, true,
-   }, Vec3(6 * 96 + 48, 4 * 96 + 96, -128))
+      true, false, false, false, true,
+   }, Vec3(6 * 96 + 48, 4 * 96 + 96, -130))
    self.entities[#self.entities + 1] = Hole({
-      true, true, false, true, true,
-   }, Vec3(7 * 96 + 48, 4 * 96 + 96, -128))
+      true, false, false, true, true,
+   }, Vec3(7 * 96 + 48, 4 * 96 + 96, -130))
+
+   self.entities[#self.entities + 1] = Hole({
+      false, true, true, false, true,
+   }, Vec3(5 * 96 + 48, 5 * 96 + 96, -130))
+   self.entities[#self.entities + 1] = Hole({
+      false, true, false, false, true,
+   }, Vec3(6 * 96 + 48, 5 * 96 + 96, -130))
+   self.entities[#self.entities + 1] = Hole({
+      false, true, false, true, true,
+   }, Vec3(7 * 96 + 48, 5 * 96 + 96, -130))
 
    self.entities[#self.entities + 1] = Chair(Vec3(500, 300, 0), math.pi * 1.5)
    self.entities[#self.entities + 1] = Table(true, Vec3(578, 300, 0))
    self.entities[#self.entities + 1] = Chair(Vec3(656, 300, 0), math.pi * 0.5)
+
+   self.entities[#self.entities + 1] = Table(true, Vec3(578, 700, 0))
 end
 
 

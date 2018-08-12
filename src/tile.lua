@@ -10,7 +10,7 @@ Tile.image = love.graphics.newArrayImage({
    "assets/tile2.png",
    "assets/tile3.png"
 })
-Tile.batch = Lovox.newVoxelBatch(Tile.image, 1, 100, "static")
+Tile.batch = Lovox.newVoxelBatch(Tile.image, 2, 100, "static")
 
 function Tile:initialize(...)
    Entity.initialize(self, ...)

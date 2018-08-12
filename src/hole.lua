@@ -5,11 +5,13 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Hole = Class("Hole", Entity)
+Hole.isHole = true
+
 Hole.wallImage = love.graphics.newImage("assets/wall.png")
 Hole.wallBatch = Lovox.newVoxelBatch(Hole.wallImage, 64, 100, "static")
 
 Hole.tileImage = love.graphics.newImage("assets/tile1.png")
-Hole.tileBatch = Lovox.newVoxelBatch(Hole.tileImage, 1, 100, "static")
+Hole.tileBatch = Lovox.newVoxelBatch(Hole.tileImage, 2, 100, "static")
 
 function Hole:initialize(places, ...)
    Entity.initialize(self, ...)

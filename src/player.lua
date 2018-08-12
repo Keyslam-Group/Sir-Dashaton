@@ -101,23 +101,19 @@ function Player:update(dt)
       
    end
 
-   local friction = self.dashing and self.dashFriction or self.friction
-   self.velocity = self.velocity - (self.velocity * friction * dt)
-
-   if self.velocity:len() < 0.1 then
-      self.velocity.x, self.velocity.y, self.velocity.z = 0, 0, 0
-   end
+   
    
    -- Move
    self.position = self.position + self.velocity * dt
 
    -- Collision
+   local overHole = false
+
    self.shape:moveTo(self.position.x, self.position.y)
    for other, sep_vec in pairs(World:collisions(self.shape)) do
       other = other.obj
 
-      self.position.x = self.position.x + sep_vec.x
-      self.position.y = self.position.y + sep_vec.y
+      local ignore = false
 
       if self.dashing then
          if other.isEnemy then
@@ -136,12 +132,33 @@ function Player:update(dt)
 
             self.dashing = false
          end
+         
+         if other.isHole and self.velocity:len() > 800 and self.dashing then
+            ignore = true
+            overHole = true
+         end
 
-         local s = 2 * (self.velocity.x * sep_vec.x + self.velocity.y * sep_vec.y) / (sep_vec.x * sep_vec.x + sep_vec.y * sep_vec.y)
-         self.velocity = -Vec3(s * sep_vec.x - self.velocity.x, s * sep_vec.y - self.velocity.y, 0)
+         if not ignore then
+            local s = 2 * (self.velocity.x * sep_vec.x + self.velocity.y * sep_vec.y) / (sep_vec.x * sep_vec.x + sep_vec.y * sep_vec.y)
+            self.velocity = -Vec3(s * sep_vec.x - self.velocity.x, s * sep_vec.y - self.velocity.y, 0)
+         end 
+      end
+
+      if not ignore then
+         self.position.x = self.position.x + sep_vec.x
+         self.position.y = self.position.y + sep_vec.y
       end
    end
    self.shape:moveTo(self.position.x, self.position.y)
+
+   if not overHole then
+      local friction = self.dashing and self.dashFriction or self.friction
+      self.velocity = self.velocity - (self.velocity * friction * dt)
+
+      if self.velocity:len() < 0.1 then
+         self.velocity.x, self.velocity.y, self.velocity.z = 0, 0, 0
+      end
+   end
 
    -- Rotation
    self.rotation = math.atan2(love.mouse.getY() - self.position.y, love.mouse.getX() - self.position.x)
@@ -167,7 +184,7 @@ function Player:update(dt)
       local perp = self.velocity:perpendicular():normalize() * (love.math.random(0, 1) * 2 - 1)
       perp.z = love.math.random() * 2 - 1
 
-      self.entities[#self.entities + 1] = DashParticle(Vec3(self.position.x, self.position.y, 32), 0, perp * love.math.random(0, 40) + (self.velocity * 0.025))
+      self.entities[#self.entities + 1] = DashParticle(Vec3(self.position.x, self.position.y, love.math.random() * 64), 0, perp * love.math.random(0, 40) + (self.velocity * 0.025))
    end
 
    -- Update data
