@@ -66,7 +66,7 @@ return {
       ox = 0, oy = 0, oz = 0,
       w = 48, h = 48, layers = 64,
 
-      "assets/wall-normal-backup.png",
+      "assets/wall-normal.png",
    },
    ["tile"] = {
       ox = 0, oy = 0, oz = 1,

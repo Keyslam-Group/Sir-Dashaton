@@ -91,7 +91,7 @@ function Test:update(dt)
    local w, h = love.graphics.getDimensions()
    self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
    
-   Game.update(self, dt)
+   --Game.update(self, dt)
    
    self.camera:origin()
 
