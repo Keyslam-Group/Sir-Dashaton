@@ -3,6 +3,7 @@ local Lovox = require("lib.lovox")
 local Vec3  = require("lib.vec3")
 local Input = require("lib.input")
 local Timer = require("lib.timer")
+local Assets = require("assets.assets")
 
 local Entity   = require("src.entity")
 local World    = require("src.world")
@@ -117,7 +118,7 @@ function Player:update(dt)
    if not self.dashing then
       -- Input
       local movementVector = Vec3(
-         self.controller:get("moveRight") - self.controller:get("moveLeft"), 
+         self.controller:get("moveRight") - self.controller:get("moveLeft"),
          self.controller:get("moveDown")  - self.controller:get("moveUp"),
          0
       )
@@ -200,7 +201,7 @@ function Player:update(dt)
 
    -- Rotation
    local mx, my = self.camera:inverseTransformPoint(love.mouse.getX(), love.mouse.getY(), 0)
-   self.rotation = math.atan2(my - self.position.y, mx - self.position.x)
+   self.rotation = self.forcedRotation or math.atan2(my - self.position.y, mx - self.position.x)
 
    -- Activate dash
    if not self.dashing then
@@ -244,7 +245,16 @@ function Player:update(dt)
    local animations = self.hasSword and self.swordAnimations or self.animations
    Player.batch:setAnimationFrame(1, animations[self.state][self.animIndex])
 
-   self.batch:setTransformation(1, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
+   self.batch:setTransformation(1,
+      self.position.x,
+      self.position.y,
+      self.position.z,
+      self.rotation - math.pi/2,
+      2, 2, 2,
+      Assets.knight.ox,
+      Assets.knight.oy,
+      Assets.knight.oz
+   )
    self.controller:endFrame()
 end
 

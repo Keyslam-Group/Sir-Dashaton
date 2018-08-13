@@ -17,6 +17,7 @@ local Torch    = require("src.torch")
 local Hole     = require("src.hole")
 local DashParticle = require("src.dashParticle")
 local OmegaSkeleton = require("src.omegaskeleton")
+local Sword    = require("src.sword")
 
 local Batches = {
    require("src.prop"),
@@ -27,9 +28,23 @@ local Batches = {
    require("src.wallbatch"),
    require("src.tilebatch"),
    require("src.omegaskeletonbatch"),
+   require("src.swordbatch")
 }
 
 local Intro = Class("Intro", Game)
+
+local moving = true
+
+local fakeController = {
+   get = function (_,name)
+      return (name == "moveUp" and moving) and 0.6 or 0
+   end,
+   pressed = function ()
+      return false
+   end,
+   endFrame = function ()
+   end
+}
 
 function Intro:initialize()
    Game.initialize(self)
@@ -39,7 +54,15 @@ function Intro:initialize()
 end
 
 function Intro:enter()
-   self.entities[1] = Player(self.entities, self.camera, Game.toReal(5, 5, 0))
+   self.entities[1] = Player(self.entities, self.camera, Game.toReal(6.5, 22, 0))
+
+   self.entities[1].controller = fakeController
+   self.entities[1].forcedRotation = -math.pi/2
+
+   self.entities[2] = Sword(Game.toReal(6.5, 5.5, 0))
+
+   self.destination = self.entities[2].position.y
+   self.scaleFactor = math.abs(self.destination - self.entities[1].position.y)
 
    local map = {
       {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -93,7 +116,13 @@ function Intro:enter()
 
    self.camx = self.entities[1].position.x
    self.camy = self.entities[1].position.y
-   --self.camr = math.pi/2
+
+   self.timer = 0
+   self.scale = 0
+   self.zoom  = 1
+   self.state = 0
+
+   self.noCombo = true
 end
 
 function Intro:leave()
@@ -103,16 +132,57 @@ local function lerp(v0, v1, t)
    return v0*(1-t)+v1*t
 end
 
+local removed = false
+
 function Intro:update(dt)
    self.camera:origin()
 
    local w, h = love.graphics.getDimensions()
-   self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
-   
-   Game.update(self, dt)
-   
-   self.camera:origin()
+   self.camera:setTransformation(
+      w/2, h/2, 0,
+      self.timer * math.pi,
+      self.zoom, self.zoom, self.zoom * self.scale,
+      self.camx, self.camy
+   )
 
+   Game.update(self, dt)
+
+   local err = math.abs(self.destination-self.entities[1].position.y)
+   if err < 1 then
+      moving = false
+      self.state = 1
+      self.entities[1].velocity = Vec3(0,0,0)
+      self.entities[1].acceleration = Vec3(0,0,0)
+   end
+
+   self.scale = 1 - err/self.scaleFactor
+
+   if self.state == 1 then
+      self.timer = self.timer + dt*0.5
+      if self.timer >= 1 then
+         self.timer = 1
+         if not removed then
+            table.remove(Batches, 3)
+            removed = true
+            self.entities[2]:increment()
+         end
+         self.state = 2
+      end
+
+      self.entities[1].position.x = self.entities[2].position.x
+      self.entities[1].position.y = self.entities[2].position.y
+   end
+
+   if self.state == 2 then
+      self.zoom = self.zoom + dt * 0.3
+      if self.zoom >= 2 then
+         self.zoom = 2
+         self.state = 3
+         self.entities[2]:increment()
+
+         self.fadeLogo = true
+      end
+   end
    self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
    self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
 end
@@ -120,7 +190,6 @@ end
 function Intro:render()
    self.camera:clear(0, 0, 0, 0)
    local w, h = love.graphics.getDimensions()
-   self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
 
    self.camera:setShader("animation")
    for _, batch in ipairs(Batches) do

@@ -9,6 +9,7 @@ local Combo = require("src.combo")
 local Wall = require("src.wall")
 local Tile = require("src.tile")
 local Hole = require("src.hole")
+local Logo = require("src.logo")
 
 local Game = Class("Game")
 
@@ -63,6 +64,10 @@ function Game:update(dt)
          table.remove(self.entities, i)
       end
    end
+
+   if self.fadeLogo then
+      Logo.update(dt)
+   end
 end
 
 function Game:render()
@@ -87,7 +92,11 @@ function Game:draw()
    World._hash:draw("line", false, true)
    ]]
 
-   Combo.draw(self.entities[1].chain)
+   if not self.noCombo then
+      Combo.draw(self.entities[1].chain)
+   elseif self.fadeLogo then
+      Logo.draw()
+   end
 end
 
 return Game
