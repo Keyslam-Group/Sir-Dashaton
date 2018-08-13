@@ -63,8 +63,8 @@ function Test:enter()
    self.entities[#self.entities + 1] = Enemy(Game.toReal(10, 3, 0), math.pi/2)
    self.entities[#self.entities + 1] = Enemy(Game.toReal(13, 5, 0), math.pi/2)
 
-   self.camx = self.entities[1].position.x - 640
-   self.camy = self.entities[1].position.y - 360
+   self.camx = self.entities[1].position.x
+   self.camy = self.entities[1].position.y
    self.camr = 0
 end
 
@@ -80,24 +80,20 @@ end
 function Test:update(dt)
    self.camera:origin()
 
-   self.camera:translate(-self.camx, -self.camy)
-   self.camera:rotate(self.camr)
+   self.camera:setTransformation(-self.camx, -self.camy, 0, self.camr, 1, 1, 1, self.camx, self.camy)
    
    Game.update(self, dt)
    
-   self.camera:translate(self.camx, self.camy)
+   self.camera:origin()
 
-   self.camx = lerp(self.camx, self.entities[1].position.x - 640, 3 * dt)
-   self.camy = lerp(self.camy, self.entities[1].position.y - 360, 3 * dt)
+   self.camx = lerp(self.camx, self.entities[1].position.x, 3 * dt)
+   self.camy = lerp(self.camy, self.entities[1].position.y, 3 * dt)
    self.camr = self.camr + dt
 end
 
 function Test:render()
    self.camera:clear(0, 0, 0, 0)
-   self.camera:origin()
-
-   self.camera:translate(-self.camx, -self.camy)
-   self.camera:rotate(self.camr)
+   self.camera:setTransformation(0, 0, 0, self.camr, 1, 1, 1, self.camx, self.camy)
 
    self.camera:setShader("animation")
    Enemy:render()
@@ -114,8 +110,6 @@ function Test:render()
    Torch:render()
    Hole:render()
    DashParticle:render()
-
-   self.camera:translate(self.camx, self.camy)
 end
 
 function Test:draw()
