@@ -66,7 +66,7 @@ return {
       ox = 0, oy = 0, oz = 0,
       w = 48, h = 48, layers = 64,
 
-      "assets/wall-normal.png",
+      "assets/wall-normal-backup.png",
    },
    ["tile"] = {
       ox = 0, oy = 0, oz = 1,
@@ -76,14 +76,14 @@ return {
       "assets/tile-floor2.png",
       "assets/tile-floor3.png",
 
-      "tile-ceiling.png",
+      "assets/tile-ceiling.png",
    },
    ["skull"] = {
       ox = 0, oy = 0, oz = 0,
       w = 42, h = 40, layers = 50,
 
-      "skull-open.png",
-      "skull-close.png",
-      "skull-death.png",
+      "assets/skull-open.png",
+      "assets/skull-close.png",
+      "assets/skull-death.png",
    }
 }
