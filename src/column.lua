@@ -11,8 +11,7 @@ function Column:initialize(...)
    Entity.initialize(self, ...)
 
    self.id = Column.batch:add(self.position.x, self.position.y, self.position.z, self.rotation, 2)
-   --self.shape = World:rectangle(self.position.x - 16, self.position.y - 16, 32, 32)
-   --self.shape.obj = self
+   Column.batch:setAnimationFrame(self.id, 2)
 end
 
 function Column.render()

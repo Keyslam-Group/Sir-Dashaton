@@ -66,8 +66,6 @@ function OmegaSkeleton:onHit(chain)
    local damage = chain * chain
    self.health = self.health - damage
 
-   print(self.health)
-
    if self.health <= 0 then
       self.shape:scale(0.3)
 

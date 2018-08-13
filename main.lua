@@ -4,7 +4,9 @@ local Steady = require("lib.steady")
 local Gamestate = require("lib.gamestate")
 
 local Game = require("src.states.game")
+local Intro = require("src.states.levels.intro")
 local Test = require("src.states.levels.test")
+local Level1 = require("src.states.levels.level1")
 
 Gamestate.registerEvents()
-Gamestate.switch(Test())
+Gamestate.switch(Intro())

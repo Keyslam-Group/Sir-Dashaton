@@ -99,8 +99,8 @@ function Test:update(dt)
    
    self.camera:origin()
 
-   self.camx = lerp(self.camx, self.entities[1].position.x, 3 * dt)
-   self.camy = lerp(self.camy, self.entities[1].position.y, 3 * dt)
+   self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
+   self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
    --self.camr = self.camr + dt
 end
 

@@ -13,7 +13,7 @@ Player.isPlayer = true
 Player.batch = require("src.knightbatch")
 
 Player.acceleration = 5000
-Player.maxVelocity  = 350
+Player.maxVelocity  = 650
 Player.friction     = 15
 
 Player.dashing      = false
@@ -160,7 +160,7 @@ function Player:update(dt)
                if other.isBoss then
                   for _, sfx in ipairs(self.attacks) do sfx:stop() end
                   self.finishers[love.math.random(1, #self.finishers)]:play()
-               elseif self.chain % 5 == 0 then
+               elseif self.chain % 2 == 0 then
                   for _, sfx in ipairs(self.attacks) do sfx:stop() end
                   self.attacks[love.math.random(1, #self.attacks)]:play()
                end
