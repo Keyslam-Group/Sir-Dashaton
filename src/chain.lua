@@ -5,8 +5,7 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Chain = Class("Chain", Entity)
-Chain.image = love.graphics.newImage("assets/chain.png")
-Chain.batch = Lovox.newVoxelBatch(Chain.image, 64, 100, "static")
+Chain.batch = require("src.wallprop")
 
 function Chain:initialize(...)
    Entity.initialize(self, ...)

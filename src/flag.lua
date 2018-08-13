@@ -5,8 +5,7 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Flag = Class("Flag", Entity)
-Flag.image = love.graphics.newImage("assets/flag.png")
-Flag.batch = Lovox.newVoxelBatch(Flag.image, 64, 100, "static")
+Flag.batch = require("src.wallprop")
 
 function Flag:initialize(...)
    Entity.initialize(self, ...)

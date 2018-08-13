@@ -5,11 +5,7 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Table = Class("Table", Entity)
-Table.image = love.graphics.newArrayImage({
-   "assets/table.png",
-   "assets/table-cake.png",
-})
-Table.batch = Lovox.newVoxelBatch(Table.image, 24, 100, "static")
+Table.batch = require("src.wallbatch")
 
 function Table:initialize(isCake, ...)
    Entity.initialize(self, ...)

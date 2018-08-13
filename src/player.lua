@@ -10,18 +10,7 @@ local DashParticle = require("src.dashParticle")
 
 local Player = Class("Player", Entity)
 Player.isPlayer = true
-Player.image = love.graphics.newArrayImage({
-   "assets/knight-walk1.png",
-   "assets/knight.png",
-   "assets/knight-walk2.png",
-
-   "assets/knight-sword-walk1.png",
-   "assets/knight-sword.png",
-   "assets/knight-sword-walk2.png",
-
-   "assets/knight-sword-dash.png",
-})
-Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
+Player.batch = require("src.knightbatch")
 
 Player.acceleration = 5000
 Player.maxVelocity  = 350

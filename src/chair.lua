@@ -5,8 +5,7 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Chair = Class("Chair", Entity)
-Chair.image = love.graphics.newImage("assets/chair.png")
-Chair.batch = Lovox.newVoxelBatch(Chair.image, 24, 100, "static")
+Chair.batch = require("src.prop")
 
 function Chair:initialize(...)
    Entity.initialize(self, ...)

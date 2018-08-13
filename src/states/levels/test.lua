@@ -17,7 +17,15 @@ local Torch    = require("src.torch")
 local Hole     = require("src.hole")
 local DashParticle = require("src.dashParticle")
 
-
+local Batches = {
+   require("src.prop"),
+   require("src.wallprop"),
+   require("src.knightbatch"),
+   require("src.skeletonbatch"),
+   require("src.tablebatch"),
+   require("src.wallbatch"),
+   require("src.tilebatch"),
+}
 
 local Test = Class("Test", Game)
 
@@ -98,19 +106,11 @@ function Test:render()
    self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
 
    self.camera:setShader("animation")
-   Enemy:render()
-   Player:render()
-   Table:render()
-   Tile:render()
+   for _, batch in ipairs(Batches) do
+      batch:draw()
+   end
 
    self.camera:setShader("default")
-   Wall:render()
-   Chain:render()
-   Chair:render()
-   Column:render()
-   Flag:render()
-   Torch:render()
-   Hole:render()
    DashParticle:render()
 end
 

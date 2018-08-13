@@ -5,8 +5,7 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Torch = Class("Torch", Entity)
-Torch.image = love.graphics.newImage("assets/torch.png")
-Torch.batch = Lovox.newVoxelBatch(Torch.image, 64, 100, "static")
+Torch.batch = require("src.wallprop")
 
 function Torch:initialize(...)
    Entity.initialize(self, ...)

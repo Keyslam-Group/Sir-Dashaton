@@ -5,8 +5,7 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Column = Class("Column", Entity)
-Column.image = love.graphics.newImage("assets/column.png")
-Column.batch = Lovox.newVoxelBatch(Column.image, 64, 100, "static")
+Column.batch = require("src.wallprop")
 
 function Column:initialize(...)
    Entity.initialize(self, ...)
