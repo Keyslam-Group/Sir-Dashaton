@@ -2,7 +2,7 @@ function love.conf(t)
    t.identity              = "Dashaton LD 42"
    t.appendidentity        = false
    t.version               = "11.1"
-   t.console               = false
+   t.console               = true
    t.accelerometerjoystick = false
    t.externalstorage       = false
    t.gammacorrect          = true
