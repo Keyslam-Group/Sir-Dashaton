@@ -151,10 +151,13 @@ function Player:update(dt)
       if self.dashing then
          if other.isEnemy then
             if other.isBoss then
-               if self.chain > 9 then
-                  if not other.state == "death" then
+               if self.chain > 4 then
+                  if other.healthMeter.points > self.chain * self.chain then
                      for _, sfx in ipairs(self.attacks) do sfx:stop() end
-                     self.finishers[love.math.random(1, #self.finishers)]:play()
+                     for _, sfx in ipairs(self.finishers) do sfx:stop() end
+
+                     local a = self.finishers[love.math.random(1, #self.finishers)]
+                     a:play()
                   end
                end
             end

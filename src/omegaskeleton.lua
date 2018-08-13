@@ -68,6 +68,7 @@ function OmegaSkeleton:onHit(chain)
    self.healthMeter.points = self.healthMeter.points - damage
 
    if self.healthMeter.points <= 0 then
+
       self.shape:scale(0.3)
 
       self.state = "death"
