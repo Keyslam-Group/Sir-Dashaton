@@ -48,6 +48,8 @@ function Level:initialize()
    self.fadeIntensity = 1
    self.fading = true
    self.sequence = true
+
+   self.omegeDead = false
 end
 
 function Level:enter()
@@ -130,6 +132,8 @@ function Level:enter()
 
    self.laugh = love.audio.newSource("sfx/laugh.ogg", "stream")
    self.laugh:play()
+
+   self.outro = love.audio.newSource("sfx/outro.ogg", "stream")
 end
 
 function Level:leave()
@@ -145,8 +149,21 @@ function Level:update(dt)
    local w, h = love.graphics.getDimensions()
    self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
    
-   Game.update(self, dt)
-   
+   if self.entities[2].state == "death" then
+      if not self.omegeDead then
+         self.omegeDead = true
+         self.outro:play()
+      end
+
+      if not self.outro:isPlaying() then
+         love.event.quit("restart")
+      end
+   end
+
+   if not self.omegeDead then
+      Game.update(self, dt)
+   end
+
    self.camera:origin()
 
    if self.fading then
@@ -184,12 +201,18 @@ function Level:render()
    DashParticle:render()
 end
 
+local credits = love.graphics.newImage("assets/text-credits.png")
+
 function Level:draw()
    Game.draw(self)
 
    love.graphics.setColor(0, 0, 0, self.fadeIntensity)
    love.graphics.rectangle("fill", 0, 0, 1280, 720)
    love.graphics.setColor(1, 1, 1, 1)
+
+   if self.omegeDead then
+      love.graphics.draw(credits, 320, 40)
+   end
 end
 
 return Level
