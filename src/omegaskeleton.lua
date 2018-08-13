@@ -43,7 +43,6 @@ end
 function OmegaSkeleton:laugh(dt)
    if self.animIndex > 14 then
       self.animIndex = 1
-      print("were done laughing tbhh")
    end
 
    return "laugh"

@@ -15,4 +15,4 @@ music:setVolume(0.035)
 music:play()
 
 Gamestate.registerEvents()
-Gamestate.switch(Level())
+Gamestate.switch(Intro())
