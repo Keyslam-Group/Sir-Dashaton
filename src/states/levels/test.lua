@@ -89,7 +89,7 @@ function Test:update(dt)
 
    self.camx = lerp(self.camx, self.entities[1].position.x, 3 * dt)
    self.camy = lerp(self.camy, self.entities[1].position.y, 3 * dt)
-   self.camr = self.camr + dt
+   --self.camr = self.camr + dt
 end
 
 function Test:render()
@@ -120,8 +120,6 @@ function Test:draw()
    love.graphics.setColor(1, 1, 1, 1)
    love.graphics.print("Combo: " ..self.entities[1].chain)
    love.graphics.print("FPS: " ..love.timer.getFPS(), 0, 10)
-
-   
 end
 
 return Test

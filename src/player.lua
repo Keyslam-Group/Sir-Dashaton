@@ -14,6 +14,12 @@ Player.image = love.graphics.newArrayImage({
    "assets/knight-walk1.png",
    "assets/knight.png",
    "assets/knight-walk2.png",
+
+   "assets/knight-sword-walk1.png",
+   "assets/knight-sword.png",
+   "assets/knight-sword-walk2.png",
+
+   "assets/knight-sword-dash.png",
 })
 Player.batch = Lovox.newVoxelBatch(Player.image, 48, 1, "dynamic")
 
@@ -29,11 +35,19 @@ Player.dashFriction = 5
 Player.chain = 0
 Player.chainTimer = nil
 
+Player.hasSword = true
+
 Player.animations = {
-   idle    = {1},
-   walking = {2, 1, 0, 1},
-   stab    = {1},
+   idle      = {1},
+   walking   = {2, 1, 0, 1},
+   dash      = {1},
 }
+Player.swordAnimations = {
+   idle      = {4},
+   walking   = {3, 4, 5, 4},
+   dash      = {6},
+}
+
 Player.animTimer = 0
 Player.animIndex = 1
 Player.state     = "idle"
@@ -78,18 +92,22 @@ function Player:walking(dt)
    return "walking"
 end
 
-function Player:stab(dt)
-   if self.animIndex > 2 then
+function Player:dash(dt)
+   if self.animIndex > 1 then
       self.animIndex = 1
-      return "stab"
+      return "dash"
    end
 
-   return "stab"
+   return "dash"
 end
 
 function Player:update(dt)
    Entity.update(self, dt)
    
+   if self.dashing then
+      self.state = "dash"
+   end
+
    if not self.dashing then
       -- Input
       local movementVector = Vec3(
@@ -128,14 +146,12 @@ function Player:update(dt)
             if other:onHit() then
                self.chain = self.chain + 1
 
-               if self.timer then
-                  Timer.cancel(self.timer)
-               end
-
-               self.timer = Timer.after(0.5, function()
+               self.timer = Timer.after(1, function()
                   self.chain = 0
                   self.timer = nil
                end)
+            else
+               self.chain = 0
             end
 
             self.dashing = false
@@ -177,6 +193,11 @@ function Player:update(dt)
       if self.controller:pressed("dash") then
          self.velocity = Vec3(math.cos(self.rotation), math.sin(self.rotation), 0) * self.dashSpeed
          self.dashing = true
+
+         if self.timer then
+            Timer.cancel(self.timer)
+            self.timer = nil
+         end
       end
    end
 
@@ -184,6 +205,7 @@ function Player:update(dt)
    if self.dashing then
       if self.velocity:len() < 100 then
          self.dashing = false
+         self.chain = 0
       end
    end
 
@@ -205,7 +227,8 @@ function Player:update(dt)
    
 
    self.state = self[self.state](self, dt)
-   Player.batch:setAnimationFrame(1, self.animations[self.state][self.animIndex])
+   local animations = self.hasSword and self.swordAnimations or self.animations
+   Player.batch:setAnimationFrame(1, animations[self.state][self.animIndex])
 
    self.batch:setTransformation(1, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
    self.controller:endFrame()
