@@ -92,6 +92,20 @@ function Level:enter()
    self.entities[#self.entities + 1] = Enemy(Game.toReal(16, 4, 0), math.pi/2)
 
    self.entities[#self.entities + 1] = Enemy(Game.toReal(16, 10, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(16, 16, 0), math.pi/2)
+
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(10, 16, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(6, 16, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(4, 15, 0), math.pi/2)
+
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(4, 12, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(4, 9, 0), math.pi/2)
+
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(7, 10, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(10, 7, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(13, 10, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(13, 13, 0), math.pi/2)
+
 
    self.camx = self.entities[1].position.x
    self.camy = self.entities[1].position.y
@@ -118,7 +132,7 @@ function Level:update(dt)
    self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
    self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
 
-   self.camr = lerp(self.camr, (self.entities[1].position.x - 500) / 2000, 5 * dt)
+   self.camr = lerp(self.camr, (self.entities[1].position.x - 500) / 7000, 5 * dt)
 end
 
 function Level:render()

@@ -161,7 +161,7 @@ function Player:update(dt)
                if other.isBoss then
                   for _, sfx in ipairs(self.attacks) do sfx:stop() end
                   self.finishers[love.math.random(1, #self.finishers)]:play()
-               elseif self.chain % 2 == 0 then
+               elseif self.chain % 5 == 0 then
                   for _, sfx in ipairs(self.attacks) do sfx:stop() end
                   self.attacks[love.math.random(1, #self.attacks)]:play()
                end

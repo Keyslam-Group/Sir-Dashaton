@@ -27,7 +27,7 @@ function OmegaSkeleton:initialize(...)
 
    self.id = self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
 
-   self.health = 250
+   self.health = 500
 end
 
 function OmegaSkeleton:idle(dt)

@@ -27,6 +27,8 @@ function Enemy:initialize(...)
    self.shape.obj = self
 
    self.id = self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
+
+   self.respawnCD = 0
 end
 
 function Enemy:idle(dt)
@@ -81,10 +83,12 @@ function Enemy:onHit()
       return false
    end
 
-   self.shape:scale(0.3)
+   self.shape:scale(0.25)
 
    self.state = "dead"..tostring(love.math.random(1, 2))
    self.animIndex = 1
+
+   self.respawnCD = 2 + love.math.random() * 2
 
    return true
 end
@@ -101,6 +105,16 @@ function Enemy:update(dt)
    if self.animTimer >= 0.15 then
       self.animTimer = 0
       self.animIndex = self.animIndex + 1
+   end
+
+   if self.state == "dead1" or self.state == "dead2" then
+      self.respawnCD = self.respawnCD - dt
+
+      if self.respawnCD <= 0 then
+         self.shape:scale(4)
+         self.state = "idle"
+         self.animIndex = 1
+      end
    end
 
    self.state = self[self.state](self, dt)
