@@ -80,7 +80,8 @@ end
 function Test:update(dt)
    self.camera:origin()
 
-   self.camera:setTransformation(-self.camx, -self.camy, 0, self.camr, 1, 1, 1, self.camx, self.camy)
+   local w, h = love.graphics.getDimensions()
+   self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
    
    Game.update(self, dt)
    
@@ -93,7 +94,8 @@ end
 
 function Test:render()
    self.camera:clear(0, 0, 0, 0)
-   self.camera:setTransformation(0, 0, 0, self.camr, 1, 1, 1, self.camx, self.camy)
+   local w, h = love.graphics.getDimensions()
+   self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
 
    self.camera:setShader("animation")
    Enemy:render()
