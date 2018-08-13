@@ -34,6 +34,10 @@ local Level1 = Class("Level1", Game)
 function Level1:initialize()
    Game.initialize(self)
 
+   self.showLevel = true
+   self.level = 1
+   self.mission = "5 Kill Combo"
+
    self.camx = 0
    self.camy = 0
 end

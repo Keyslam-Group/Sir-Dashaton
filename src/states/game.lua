@@ -13,6 +13,9 @@ local Logo = require("src.logo")
 
 local Game = Class("Game")
 
+love.graphics.setNewFont("assets/romulus.ttf", 31)
+
+
 function Game:initialize()
    self.entities = {}
 
@@ -46,12 +49,28 @@ function Game.map(map)
 end
 
 function Game:enter()
+   self.showLevel = not not self.level
+   self.levelIncrement = 1
 end
 
 function Game:leave()
 end
 
 function Game:update(dt)
+
+   if self.showLevel then
+      self.levelFade = (self.levelFade or 1) + (self.levelIncrement or 1) * 0.7 * dt
+
+      if self.levelFade >= 2 then
+         self.levelIncrement = -1
+      end
+
+      if self.levelFade <= 0 then
+         self.showLevel = false
+      end
+      return
+   end
+
    Timer.update(dt)
 
    for _, entity in ipairs(self.entities) do
@@ -78,7 +97,7 @@ function Game:draw()
       entity:draw()
    end
 
-   
+
    self.camera:renderTo(self.render, self)
    self.camera:render()
 
@@ -96,6 +115,19 @@ function Game:draw()
       Combo.draw(self.entities[1].chain)
    elseif self.fadeLogo then
       Logo.draw()
+   end
+
+   if self.showLevel then
+      local w = love.graphics.getWidth()
+      local h = love.graphics.getHeight()/2
+
+      love.graphics.setColor(0, 0, 0, self.levelFade)
+      love.graphics.rectangle("fill", 0, 0, w, h*2)
+
+      love.graphics.setColor(1, 1, 1, self.levelFade)
+      love.graphics.printf("Level "..self.level, 0, h - 32, w, "center")
+      love.graphics.printf(self.mission, 0, h + 32, w, "center")
+      love.graphics.setColor(1, 1, 1)
    end
 end
 
