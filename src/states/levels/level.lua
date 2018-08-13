@@ -54,6 +54,9 @@ function Level:enter()
    self.entities[1] = Player(self.entities, self.camera, Game.toReal(10, 18, 0))
    self.entities[2] = OmegaSkeleton(Game.toReal(10, 10, 0), math.pi/2)
 
+   self.health = self.entities[2].healthMeter
+   print(self.health)
+
    local map = {
       {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
       {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},

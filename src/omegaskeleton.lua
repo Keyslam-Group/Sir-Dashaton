@@ -5,6 +5,8 @@ local Vec3  = require("lib.vec3")
 local Entity = require("src.entity")
 local World  = require("src.world")
 
+local Health = require("src.bosshealth")
+
 local OmegaSkeleton = Class("OmegaSkeleton", Entity)
 OmegaSkeleton.isEnemy = true
 OmegaSkeleton.isBoss  = true
@@ -25,9 +27,9 @@ function OmegaSkeleton:initialize(...)
    self.shape = World:circle(self.position.x, self.position.y, 35)
    self.shape.obj = self
 
-   self.id = self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
+   self.healthMeter = Health(500)
 
-   self.health = 500
+   self.id = self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
 end
 
 function OmegaSkeleton:idle(dt)
@@ -64,9 +66,9 @@ function OmegaSkeleton:onHit(chain)
    end
 
    local damage = chain * chain
-   self.health = self.health - damage
+   self.healthMeter.points = self.healthMeter.points - damage
 
-   if self.health <= 0 then
+   if self.healthMeter.points <= 0 then
       self.shape:scale(0.3)
 
       self.state = "death"
