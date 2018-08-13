@@ -6,7 +6,7 @@ local World  = require("src.world")
 
 local DashParticle = Class("DashParticle", Entity)
 DashParticle.image = love.graphics.newImage("assets/particle.png")
-DashParticle.batch = Lovox.newVoxelBatch(DashParticle.image, 2, 10000, "static")
+DashParticle.batch = Lovox.newVoxelBatch(DashParticle.image, 2, 30000, "static")
 
 function DashParticle:initialize(...)
    Entity.initialize(self, ...)

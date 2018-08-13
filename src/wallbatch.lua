@@ -1,5 +1,5 @@
 --ARGUMENTS
-local voxelCount, usage = 250, "static"
+local voxelCount, usage = 1000, "static"
 
 local vertices, vertexMap = {}, {}
 

@@ -18,6 +18,10 @@ local Hole     = require("src.hole")
 local DashParticle = require("src.dashParticle")
 local OmegaSkeleton = require("src.omegaskeleton")
 local Sword    = require("src.sword")
+local World = require("src.world")
+
+local GameState = require("lib.gamestate")
+local Level = require("src.states.levels.level")
 
 local Batches = {
    require("src.prop"),
@@ -124,8 +128,10 @@ function Intro:enter()
 
    self.noCombo = true
 
-   local introAudio = love.audio.newSource("sfx/intro.ogg", "stream")
-   introAudio:play()
+   self.fadeIntensity = 0
+
+   self.introAudio = love.audio.newSource("sfx/intro.ogg", "stream")
+   self.introAudio:play()
 end
 
 function Intro:leave()
@@ -186,8 +192,24 @@ function Intro:update(dt)
          self.fadeLogo = true
       end
    end
+
    self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
    self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
+   
+   if self.fading then
+      self.fadeIntensity = math.min(1, lerp(self.fadeIntensity, 1.1, dt))
+      self.introAudio:setVolume(1 - self.fadeIntensity)
+
+      if self.fadeIntensity == 1 then
+         self.entities = {}
+         for _, batch in ipairs(Batches) do
+            batch:clear()
+         end
+         DashParticle.batch:clear()
+         World:resetHash()
+         GameState.switch(Level())
+      end
+   end
 end
 
 function Intro:render()
@@ -201,6 +223,21 @@ function Intro:render()
 
    self.camera:setShader("default")
    DashParticle:render()
+end
+
+function Intro:draw()
+   Game.draw(self)
+
+   love.graphics.setColor(0, 0, 0, self.fadeIntensity)
+   love.graphics.rectangle("fill", 0, 0, 1280, 720)
+   love.graphics.setColor(1, 1, 1, 1)
+end
+
+function Intro:mousepressed()
+   if self.state == 3 and not self.fading then
+      self.fading = true
+      self.fadeIntensity = 0
+   end
 end
 
 return Intro

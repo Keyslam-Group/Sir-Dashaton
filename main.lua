@@ -12,7 +12,7 @@ local Level = require("src.states.levels.level")
 local music = love.audio.newSource("sfx/music.ogg", "static")
 music:setLooping(true)
 music:setVolume(0.035)
---music:play()
+music:play()
 
 Gamestate.registerEvents()
 Gamestate.switch(Level())

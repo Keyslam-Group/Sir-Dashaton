@@ -31,15 +31,28 @@ local Batches = {
 
 local Level = Class("Level", Game)
 
+local function lerp(v0, v1, t)
+   return v0*(1-t)+v1*t
+end
+
 function Level:initialize()
    Game.initialize(self)
 
    self.camx = 0
    self.camy = 0
+
+   self.showLevel = true
+   self.level     = "BOSS"
+   self.mission   = "Kill Omega Skeleton"
+
+   self.fadeIntensity = 1
+   self.fading = true
+   self.sequence = true
 end
 
 function Level:enter()
-   self.entities[1] = Player(self.entities, self.camera, Game.toReal(5, 5, 0))
+   self.entities[1] = Player(self.entities, self.camera, Game.toReal(10, 18, 0))
+   self.entities[2] = OmegaSkeleton(Game.toReal(10, 10, 0), math.pi/2)
 
    local map = {
       {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -59,14 +72,17 @@ function Level:enter()
       {3, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3},
       {3, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3},
       {3, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 3},
-      {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+      {3, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 3},
       {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
    }
    Game.map(map)
 
    for x = 4, 16, 2 do
       self.entities[#self.entities + 1] = Column(Game.toReal(x, 2.6, 0))
-      self.entities[#self.entities + 1] = Column(Game.toReal(x, 17.4, 0), math.pi)
+
+      if x ~= 10 then
+         self.entities[#self.entities + 1] = Column(Game.toReal(x, 17.4, 0), math.pi)
+      end
    end
 
    for y = 4, 16, 2 do
@@ -94,6 +110,8 @@ function Level:enter()
    self.entities[#self.entities + 1] = Enemy(Game.toReal(16, 10, 0), math.pi/2)
    self.entities[#self.entities + 1] = Enemy(Game.toReal(16, 16, 0), math.pi/2)
 
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(10, 12, 0), math.pi/2)
+
    self.entities[#self.entities + 1] = Enemy(Game.toReal(10, 16, 0), math.pi/2)
    self.entities[#self.entities + 1] = Enemy(Game.toReal(6, 16, 0), math.pi/2)
    self.entities[#self.entities + 1] = Enemy(Game.toReal(4, 15, 0), math.pi/2)
@@ -106,10 +124,12 @@ function Level:enter()
    self.entities[#self.entities + 1] = Enemy(Game.toReal(13, 10, 0), math.pi/2)
    self.entities[#self.entities + 1] = Enemy(Game.toReal(13, 13, 0), math.pi/2)
 
-
    self.camx = self.entities[1].position.x
    self.camy = self.entities[1].position.y
    self.camr = 0
+
+   self.laugh = love.audio.newSource("sfx/laugh.ogg", "stream")
+   self.laugh:play()
 end
 
 function Level:leave()
@@ -129,10 +149,25 @@ function Level:update(dt)
    
    self.camera:origin()
 
-   self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
-   self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
+   if self.fading then
+      self.fadeIntensity = math.max(0, lerp(self.fadeIntensity, -0.1, dt))
+      if self.fadeIntensity <= 0 then
+         self.fading = false
+      end
+   end
 
-   self.camr = lerp(self.camr, (self.entities[1].position.x - 500) / 7000, 5 * dt)
+   self.sequence = self.laugh:isPlaying()
+   if self.sequence then
+      self.camx = lerp(self.camx, self.entities[2].position.x, 1 * dt)
+      self.camy = lerp(self.camy, self.entities[2].position.y, 1 * dt)
+
+      self.camr = lerp(self.camr, (self.entities[2].position.x - 200) / 9000, 5 * dt)
+   else
+      self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
+      self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
+
+      self.camr = lerp(self.camr, (self.entities[1].position.x - 200) / 9000, 5 * dt)
+   end
 end
 
 function Level:render()
@@ -147,6 +182,14 @@ function Level:render()
 
    self.camera:setShader("default")
    DashParticle:render()
+end
+
+function Level:draw()
+   Game.draw(self)
+
+   love.graphics.setColor(0, 0, 0, self.fadeIntensity)
+   love.graphics.rectangle("fill", 0, 0, 1280, 720)
+   love.graphics.setColor(1, 1, 1, 1)
 end
 
 return Level

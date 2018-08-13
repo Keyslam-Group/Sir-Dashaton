@@ -24,7 +24,6 @@ function Logo.draw()
    love.graphics.setColor(1, 1, 1, Logo.timer)
    love.graphics.draw(Logo.logo, (w-tw*2)/2, h-th*2-10, 0, 2)
 
-
    local a = math.floor(Logo.change + 0.5) % 2 + 1
    love.graphics.draw(Logo.button[a], w-bw*1.3-100, 100, 0, 1.3)
    love.graphics.setColor(1, 1, 1)

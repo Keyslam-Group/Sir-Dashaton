@@ -150,6 +150,15 @@ function Player:update(dt)
 
       if self.dashing then
          if other.isEnemy then
+            if other.isBoss then
+               print(self.chain)
+               if self.chain > 9 then
+                  for _, sfx in ipairs(self.attacks) do sfx:stop() end
+                  self.finishers[love.math.random(1, #self.finishers)]:play()
+               end
+            end
+
+
             if other:onHit(self.chain) then
                self.chain = self.chain + 1
 
@@ -158,10 +167,7 @@ function Player:update(dt)
                   self.timer = nil
                end)
                
-               if other.isBoss then
-                  for _, sfx in ipairs(self.attacks) do sfx:stop() end
-                  self.finishers[love.math.random(1, #self.finishers)]:play()
-               elseif self.chain % 5 == 0 then
+               if self.chain % 5 == 0 then
                   for _, sfx in ipairs(self.attacks) do sfx:stop() end
                   self.attacks[love.math.random(1, #self.attacks)]:play()
                end
@@ -169,6 +175,7 @@ function Player:update(dt)
                self.chain = 0
             end
 
+            
             self.dashing = false
          end
          
