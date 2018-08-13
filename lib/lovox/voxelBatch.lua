@@ -7,12 +7,12 @@ local Transform = require(PATH..".transform")
 local VoxelBatch = {}
 VoxelBatch.__index = VoxelBatch
 
-local vertexFormat = {
+VoxelBatch.vertexFormat = {
    {"VertexPosition", "float", 3},
    {"VertexTexCoord", "float", 2},
 }
 
-local instanceFormat = {
+VoxelBatch.instanceFormat = {
    {"MatRow1", "float", 4},
    {"MatRow2", "float", 4},
    {"MatRow3", "float", 4},
@@ -22,14 +22,14 @@ local instanceFormat = {
    {"AnimationFrame", "float", 1},
 }
 
-local function newModelAttributes(voxelCount, usage)
+function VoxelBatch.newModelAttributes(voxelCount, usage)
    local memoryUsage = voxelCount * Transform.instanceSize
 
    local instanceData    = love.data.newByteData(memoryUsage) --luacheck: ignore
    local vertexBuffer    = Transform.castInstances(instanceData:getPointer())
 
    --The attribute mesh has only the per-instance attributes of the models
-   local modelAttributes = love.graphics.newMesh(instanceFormat, instanceData, "points", usage)
+   local modelAttributes = love.graphics.newMesh(VoxelBatch.instanceFormat, instanceData, "points", usage)
 
    return modelAttributes, instanceData, vertexBuffer
 end
@@ -84,10 +84,10 @@ end
 -- @returns A new VoxelBatch object.
 function VoxelBatch.new(texture, layers, voxelCount, usage)
    local vertices = newVertices(texture:getWidth(), texture:getHeight() / layers, layers)
-   local modelAttributes, instanceData, vertexBuffer = newModelAttributes(voxelCount, usage)
+   local modelAttributes, instanceData, vertexBuffer = VoxelBatch.newModelAttributes(voxelCount, usage)
 
    --The model mesh, is a static mesh which has the different layers and the associated texture
-   local mesh = love.graphics.newMesh(vertexFormat, vertices, "triangles", "static")
+   local mesh = love.graphics.newMesh(VoxelBatch.vertexFormat, vertices, "triangles", "static")
    mesh:setVertexMap(newVertexMap(layers))
    mesh:setTexture(texture)
 
