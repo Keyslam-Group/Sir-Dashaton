@@ -111,6 +111,10 @@ function Game:draw()
    World._hash:draw("line", false, true)
    ]]
 
+   if self.health then
+      self.health:draw()
+   end
+
    if not self.noCombo then
       Combo.draw(self.entities[1].chain)
    elseif self.fadeLogo then
