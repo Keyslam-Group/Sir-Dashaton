@@ -20,7 +20,7 @@ function Camera.new(w, h)
       rendering      = false,
       transform      = Transform.new():reset(),
       dirtyTransform = true,
-      loveTransform  = love.math.newTransform()
+      loveTransform  = love.math.newTransform() --luacheck: ignore
    }, Camera):resize(w, h)
 end
 
@@ -89,6 +89,12 @@ end
 -- @returns shader The shader object for the active shader
 function Camera:getShader()
    return self.shader
+end
+
+function Camera:setTransformation(...)
+   self.transform:setTransformation(...)
+   self.dirtyTransform = true
+   return sendCamera(self)
 end
 
 --- Translates the Camera
