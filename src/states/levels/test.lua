@@ -16,6 +16,7 @@ local Tile     = require("src.tile")
 local Torch    = require("src.torch")
 local Hole     = require("src.hole")
 local DashParticle = require("src.dashParticle")
+local OmegaSkeleton = require("src.omegaskeleton")
 
 local Batches = {
    require("src.prop"),
@@ -25,6 +26,7 @@ local Batches = {
    require("src.tablebatch"),
    require("src.wallbatch"),
    require("src.tilebatch"),
+   require("src.omegaskeletonbatch"),
 }
 
 local Test = Class("Test", Game)
@@ -70,6 +72,8 @@ function Test:enter()
    self.entities[#self.entities + 1] = Enemy(Game.toReal(12, 9, 0), math.pi/2)
    self.entities[#self.entities + 1] = Enemy(Game.toReal(10, 3, 0), math.pi/2)
    self.entities[#self.entities + 1] = Enemy(Game.toReal(13, 5, 0), math.pi/2)
+
+   self.entities[#self.entities + 1] = OmegaSkeleton(Game.toReal(6, 5, 0), math.pi/2)
 
    self.camx = self.entities[1].position.x
    self.camy = self.entities[1].position.y

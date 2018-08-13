@@ -12,7 +12,7 @@ local conf = {
    update_time = math.huge, --Max time spent updating the game
  
    ------ Fixed timestep configuration ------
-   tick_rate = 1/60, --Fixed tick rate
+   tick_rate = 1/120, --Fixed tick rate
    max_frame_skip = 25, --Max number of frames that can be skipped by fixed update
  
    ------------ GC configuration ------------

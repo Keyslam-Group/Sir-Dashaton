@@ -17,7 +17,7 @@ Player.maxVelocity  = 350
 Player.friction     = 15
 
 Player.dashing      = false
-Player.dashSpeed    = 2200
+Player.dashSpeed    = 2500
 Player.curDashSpeed = 0
 Player.dashFriction = 5
 
@@ -42,6 +42,23 @@ Player.animIndex = 1
 Player.state     = "idle"
 
 Player.dashDist = 0
+
+Player.attacks = {
+   love.audio.newSource("sfx/attacks/crashing-dash.ogg", "static"),
+   love.audio.newSource("sfx/attacks/dash.ogg", "static"),
+   love.audio.newSource("sfx/attacks/dash-combo.ogg", "static"),
+   love.audio.newSource("sfx/attacks/dashimate.ogg", "static"),
+   love.audio.newSource("sfx/attacks/dashtruction.ogg", "static"),
+   love.audio.newSource("sfx/attacks/omega-dash.ogg", "static"),
+   love.audio.newSource("sfx/attacks/piercing-dash.ogg", "static"),
+}
+
+Player.finishers = {
+   love.audio.newSource("sfx/finishers/dash-of-infinity.ogg", "static"),
+   love.audio.newSource("sfx/finishers/simple-geometry-dash.ogg", "static"),
+   love.audio.newSource("sfx/finishers/super-omega-final-dash.ogg", "static"),
+   love.audio.newSource("sfx/finishers/united-states-of-dash.ogg", "static"),
+}
 
 function Player:initialize(entities, camera, ...)
    Entity.initialize(self, ...)
@@ -132,13 +149,21 @@ function Player:update(dt)
 
       if self.dashing then
          if other.isEnemy then
-            if other:onHit() then
+            if other:onHit(self.chain) then
                self.chain = self.chain + 1
 
                self.timer = Timer.after(1, function()
                   self.chain = 0
                   self.timer = nil
                end)
+               
+               if other.isBoss then
+                  for _, sfx in ipairs(self.attacks) do sfx:stop() end
+                  self.finishers[love.math.random(1, #self.finishers)]:play()
+               elseif self.chain % 5 == 0 then
+                  for _, sfx in ipairs(self.attacks) do sfx:stop() end
+                  self.attacks[love.math.random(1, #self.attacks)]:play()
+               end
             else
                self.chain = 0
             end
