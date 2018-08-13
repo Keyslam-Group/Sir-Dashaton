@@ -27,7 +27,7 @@ Enemy.state     = "idle"
 function Enemy:initialize(...)
    Entity.initialize(self, ...)
 
-   self.shape = World:circle(self.position.x, self.position.y, 20)
+   self.shape = World:circle(self.position.x, self.position.y, 35)
    self.shape.obj = self
 
    self.id = self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)

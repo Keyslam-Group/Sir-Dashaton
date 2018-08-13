@@ -23,70 +23,49 @@ local Test = Class("Test", Game)
 
 function Test:initialize()
    Game.initialize(self)
+
+   self.camx = 0
+   self.camy = 0
 end
 
 function Test:enter()
-   self.entities[1] = Player(self.entities, self.camera, Vec3(200, 500, 0))
+   self.entities[1] = Player(self.entities, self.camera, Game.toReal(5, 5, 0))
 
-   for x = 1, 12 do
-      self.entities[#self.entities + 1] = Tile(Vec3(x * 96, 84 + 1 * 96, -3))
-   end
+   local map = {
+      {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+      {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},
+      {3, 2, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 3},
+      {3, 2, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 3},
+      {3, 2, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 3},
+      {3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3},
+      {3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3},
+      {3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 2, 2, 3, 3},
+      {3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 2, 2, 3, 3},
+      {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+   }
+   Game.map(map)
 
-   for x = 1, 5 do
-      for y = 2, 5 do
-         self.entities[#self.entities + 1] = Tile(Vec3(x * 96, 84 + y * 96, -3))
+   for i = 2, 12, 2 do
+      if i ~= 8 then
+         self.entities[#self.entities + 1] = Column(Game.toReal(i + 0.5, 2 + 0.6, 0))
       end
    end
 
-   for x = 8, 12 do
-      for y = 2, 3 do
-         self.entities[#self.entities + 1] = Tile(Vec3(x * 96, 84 + y * 96, -3))
-      end
-   end
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(2, 3, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(5, 4, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(7, 3, 0), math.pi/2)
 
-   for i = 1, 12 do
-      self.entities[#self.entities + 1] = Wall(Vec3(i * 96, 180, 0), love.math.random(0, 3) * math.pi/2)
-   end
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(3, 7, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(6, 8, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(7, 6, 0), math.pi/2)
 
-   for i = 1, 11, 2 do
-      self.entities[#self.entities + 1] = Column(Vec3(i * 96 + 48, 238, 0))
-   end
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(12, 9, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(10, 3, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(13, 5, 0), math.pi/2)
 
-   self.entities[#self.entities + 1] = Hole({true, false, true, false, true}, Vec3(6 * 96, 180 + 1 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, true, true}, Vec3(7 * 96, 180 + 1 * 96, -130))
-
-   self.entities[#self.entities + 1] = Hole({false, false, true, false, true}, Vec3(6 * 96, 180 + 2 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, false, true, true}, Vec3(7 * 96, 180 + 2 * 96, -130))
-
-   self.entities[#self.entities + 1] = Hole({false, false, true, false, true}, Vec3(6 * 96, 180 + 3 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, true, false, true}, Vec3(6 * 96, 180 + 4 * 96, -130))
-
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(8 * 96, 180 + 3 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(9 * 96, 180 + 3 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(10 * 96, 180 + 3 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(11 * 96, 180 + 3 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, true}, Vec3(12 * 96, 180 + 3 * 96, -130))
-
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(4 * 96, 180 + 5 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(3 * 96, 180 + 5 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(2 * 96, 180 + 5 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({true, false, false, false, false}, Vec3(1 * 96, 180 + 5 * 96, -130))
-
-   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(7 * 96, 180 + 3 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(7 * 96, 180 + 4 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(8 * 96, 180 + 4 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(9 * 96, 180 + 4 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(10 * 96, 180 + 4 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(11 * 96, 180 + 4 * 96, -130))
-   self.entities[#self.entities + 1] = Hole({false, false, false, false, true}, Vec3(12 * 96, 180 + 4 * 96, -130))
-   
-   
-   self.entities[#self.entities + 1] = Enemy(Vec3(120, 280, 0), math.pi/2)
-   self.entities[#self.entities + 1] = Enemy(Vec3(486, 280, 0), math.pi/2)
-   self.entities[#self.entities + 1] = Enemy(Vec3(486, 550, 0), math.pi/2)
-
-   self.entities[#self.entities + 1] = Enemy(Vec3(800, 280, 0), math.pi/2)
-   self.entities[#self.entities + 1] = Enemy(Vec3(1100, 380, 0), math.pi/2)
+   self.camx = self.entities[1].position.x - 640
+   self.camy = self.entities[1].position.y - 360
+   self.camr = 0
 end
 
 
@@ -94,22 +73,31 @@ end
 function Test:leave()
 end
 
+local function lerp(v0, v1, t)
+   return v0*(1-t)+v1*t
+end
+
 function Test:update(dt)
+   self.camera:origin()
+
+   self.camera:translate(-self.camx, -self.camy)
+   self.camera:rotate(self.camr)
+   
    Game.update(self, dt)
+   
+   self.camera:translate(self.camx, self.camy)
 
-   self.camera:translate(640, 360)
-   if love.keyboard.isDown("q") then
-      self.camera:rotate(dt / 2)
-   end
-   if love.keyboard.isDown("e") then
-      self.camera:rotate(-dt / 2)
-   end
-
-   self.camera:translate(-640, -360)
+   self.camx = lerp(self.camx, self.entities[1].position.x - 640, 3 * dt)
+   self.camy = lerp(self.camy, self.entities[1].position.y - 360, 3 * dt)
+   self.camr = self.camr + dt
 end
 
 function Test:render()
    self.camera:clear(0, 0, 0, 0)
+   self.camera:origin()
+
+   self.camera:translate(-self.camx, -self.camy)
+   self.camera:rotate(self.camr)
 
    self.camera:setShader("animation")
    Enemy:render()
@@ -126,6 +114,8 @@ function Test:render()
    Torch:render()
    Hole:render()
    DashParticle:render()
+
+   self.camera:translate(self.camx, self.camy)
 end
 
 function Test:draw()

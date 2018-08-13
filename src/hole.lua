@@ -25,6 +25,11 @@ function Hole:initialize(places, ...)
 
    if places[5] then self.ids[#self.ids + 1] = Hole.tileBatch:add(self.position.x, self.position.y, self.position.z, self.rotation, 2) end
 
+   if not places[5] then
+      self.isHole = false
+      self.isWall = true
+   end
+
    self.shape = World:rectangle(self.position.x - 48, self.position.y - 48, 96, 96)
    self.shape.obj = self
 end
