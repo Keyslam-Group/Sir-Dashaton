@@ -1,16 +1,16 @@
 function love.conf(t)
-   t.identity              = "Dashaton"
+   t.identity              = "Dashaton LD 42"
    t.appendidentity        = false
    t.version               = "11.1"
-   t.console               = true
+   t.console               = false
    t.accelerometerjoystick = false
    t.externalstorage       = false
    t.gammacorrect          = true
 
    t.audio.mixwithsystem = true
 
-   t.window.title          = "Dashaton LD 42"
-   t.window.icon           = nil
+   t.window.title          = "Sir. Dashaton & the legend of the Omega Skeleton"
+   t.window.icon           = "assets/icon.png"
    t.window.width          = 1280
    t.window.height         = 720
    t.window.borderless     = false
@@ -32,7 +32,7 @@ function love.conf(t)
    t.modules.font     = true
    t.modules.graphics = true
    t.modules.image    = true
-   t.modules.joystick = true
+   t.modules.joystick = false
    t.modules.keyboard = true
    t.modules.math     = true
    t.modules.mouse    = true

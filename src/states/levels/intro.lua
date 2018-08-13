@@ -59,6 +59,7 @@ end
 
 function Intro:enter()
    self.entities[1] = Player(self.entities, self.camera, Game.toReal(6.5, 22, 0))
+   self.entities[1].hasSword = false
 
    self.entities[1].controller = fakeController
    self.entities[1].forcedRotation = -math.pi/2
