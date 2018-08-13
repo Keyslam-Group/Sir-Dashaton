@@ -16,11 +16,11 @@ function Health:draw ()
 
    local x, y = w-aw, h-ah
 
-   love.graphics.setColor(1, 0, 0)
+   love.graphics.setColor(224/255, 70/255, 70/255)
    love.graphics.rectangle("fill", x+4, y+47, sw, 33)
 
    local rw = sw * (1-self.points/self.maxpoints)
-   love.graphics.setColor(0, 1, 0)
+   love.graphics.setColor(118/255, 232/255, 86/255)
    love.graphics.rectangle("fill", x+4 + rw, y+47, sw-rw, 33)
 
    love.graphics.setColor(1,1,1)
