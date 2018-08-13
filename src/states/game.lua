@@ -27,7 +27,7 @@ function Game.map(map)
       for x = 1, #map[y] do
          local v = map[y][x]
          if v == 1 then
-            --Wall(Game.toReal(x, y, 0), love.math.random(0, 3) * math.pi/2)
+            Wall(Game.toReal(x, y, 0), love.math.random(0, 3) * math.pi/2)
             Tile(Game.toReal(x, y, -3), love.math.random(0, 3) * math.pi/2)
          elseif v == 2 then
             Tile(Game.toReal(x, y, -3), love.math.random(0, 3) * math.pi/2)

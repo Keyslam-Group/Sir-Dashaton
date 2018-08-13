@@ -16,10 +16,10 @@ function Hole:initialize(places, ...)
    self.ids = {}
    
    love.graphics.setColor(0.4, 0.4, 0.4)
-   --if places[1] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x, self.position.y - 96, self.position.z, self.rotation, 2) end
-   --if places[2] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x, self.position.y + 96, self.position.z, self.rotation, 2) end
-   --if places[3] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x - 96, self.position.y, self.position.z, self.rotation, 2) end
-   --if places[4] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x + 96, self.position.y, self.position.z, self.rotation, 2) end
+   if places[1] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x, self.position.y - 96, self.position.z, self.rotation, 2) end
+   if places[2] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x, self.position.y + 96, self.position.z, self.rotation, 2) end
+   if places[3] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x - 96, self.position.y, self.position.z, self.rotation, 2) end
+   if places[4] then self.ids[#self.ids + 1] = Hole.wallBatch:add(self.position.x + 96, self.position.y, self.position.z, self.rotation, 2) end
 
    love.graphics.setColor(0.6, 0.6, 0.6)
    if places[5] then self.ids[#self.ids + 1] = Hole.tileBatch:add(self.position.x, self.position.y, self.position.z, self.rotation, 2) end

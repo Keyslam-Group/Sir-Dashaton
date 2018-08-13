@@ -27,14 +27,14 @@ Player.chainTimer = nil
 Player.hasSword = true
 
 Player.animations = {
-   idle      = {1},
-   walking   = {2, 1, 0, 1},
-   dash      = {1},
+   idle      = {0},
+   walking   = {2, 0, 5, 0},
+   dash      = {8},
 }
 Player.swordAnimations = {
-   idle      = {4},
-   walking   = {3, 4, 5, 4},
-   dash      = {6},
+   idle      = {1},
+   walking   = {3, 1, 6, 1},
+   dash      = {8},
 }
 
 Player.animTimer = 0

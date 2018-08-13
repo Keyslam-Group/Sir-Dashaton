@@ -11,8 +11,10 @@ Enemy.batch = require("src.skeletonbatch")
 
 Enemy.animations = {
    idle    = {1},
-   walking = {2, 1, 0, 1},
-   stab    = {3},
+   walking = {3, 1, 4, 1},
+   stab    = {2},
+   dead1   = {5},
+   dead2   = {4},
 }
 Enemy.animTimer = 0
 Enemy.animIndex = 1
@@ -56,9 +58,33 @@ function Enemy:stab(dt)
    return "stab"
 end
 
+function Enemy:dead1(dt)
+   if self.animIndex > 1 then
+      self.animIndex = 1
+      return "dead1"
+   end
+
+   return "dead1"
+end
+
+function Enemy:dead2(dt)
+   if self.animIndex > 1 then
+      self.animIndex = 1
+      return "dead2"
+   end
+
+   return "dead2"
+end
 
 function Enemy:onHit()
-   self.isAlive = false
+   if self.state == "dead1" or self.state == "dead2" then
+      return false
+   end
+
+   self.shape:scale(0.3)
+
+   self.state = "dead"..tostring(love.math.random(1, 2))
+   self.animIndex = 1
 
    return true
 end
