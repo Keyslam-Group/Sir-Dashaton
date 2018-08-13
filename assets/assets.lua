@@ -76,6 +76,14 @@ return {
       "assets/tile-floor2.png",
       "assets/tile-floor3.png",
 
-      "assets/tile-ceiling.png",
+      "tile-ceiling.png",
+   },
+   ["skull"] = {
+      ox = 0, oy = 0, oz = 0,
+      w = 42, h = 40, layers = 50,
+
+      "skull-open.png",
+      "skull-close.png",
+      "skull-death.png",
    }
 }
