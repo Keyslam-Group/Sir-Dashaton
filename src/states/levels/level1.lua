@@ -64,11 +64,21 @@ function Level1:enter()
       self.entities[#self.entities + 1] = Flag(Game.toReal(x, 8 - 0.65, 0), math.pi)
    end
 
-   self.entities[#self.entities + 1] = Table(Game.toReal(5, 2, 0), 0)
+   self.entities[#self.entities + 1] = Table(true, Game.toReal(5, 3, 0), 0)
+   self.entities[#self.entities + 1] = Table(true, Game.toReal(9, 3, 0), 0)
+
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(6, 3.4, 0), -math.pi - 0.2)
+
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(8.6, 4, 0), -math.pi/2 + 0.1)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(9.5, 3.8, 0), -math.pi/2 - 0.2)
+
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(7.3, 5.8, 0), math.pi/2)
+   self.entities[#self.entities + 1] = Enemy(Game.toReal(4, 4.5, 0), 0)
+
 
    self.camx = self.entities[1].position.x
    self.camy = self.entities[1].position.y
-   --self.camr = math.pi/2
+   self.camr = 0
 end
 
 function Level1:leave()
@@ -90,6 +100,8 @@ function Level1:update(dt)
 
    self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
    self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
+
+   self.camr = lerp(self.camr, (self.entities[1].position.x - 600) / 8000, 5 * dt)
 end
 
 function Level1:render()

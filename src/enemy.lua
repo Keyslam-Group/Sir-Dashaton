@@ -10,7 +10,7 @@ Enemy.isEnemy = true
 Enemy.batch = require("src.skeletonbatch")
 
 Enemy.animations = {
-   idle    = {1},
+   idle    = {0},
    walking = {3, 1, 4, 1},
    stab    = {2},
    dead1   = {5},

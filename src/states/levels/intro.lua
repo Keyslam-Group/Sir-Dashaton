@@ -37,7 +37,7 @@ local moving = true
 
 local fakeController = {
    get = function (_,name)
-      return (name == "moveUp" and moving) and 0.6 or 0
+      return (name == "moveUp" and moving) and 0.425 or 0
    end,
    pressed = function ()
       return false
@@ -123,6 +123,9 @@ function Intro:enter()
    self.state = 0
 
    self.noCombo = true
+
+   local introAudio = love.audio.newSource("sfx/intro.ogg", "stream")
+   introAudio:play()
 end
 
 function Intro:leave()
@@ -158,7 +161,7 @@ function Intro:update(dt)
    self.scale = 1 - err/self.scaleFactor
 
    if self.state == 1 then
-      self.timer = self.timer + dt*0.5
+      self.timer = lerp(self.timer, 1.1, dt*1.3)
       if self.timer >= 1 then
          self.timer = 1
          if not removed then
@@ -174,7 +177,7 @@ function Intro:update(dt)
    end
 
    if self.state == 2 then
-      self.zoom = self.zoom + dt * 0.3
+      self.zoom = lerp(self.zoom, 2.5, dt * 0.7)
       if self.zoom >= 2 then
          self.zoom = 2
          self.state = 3

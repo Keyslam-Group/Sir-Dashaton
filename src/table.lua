@@ -5,7 +5,7 @@ local Entity = require("src.entity")
 local World  = require("src.world")
 
 local Table = Class("Table", Entity)
-Table.batch = require("src.wallbatch")
+Table.batch = require("src.tablebatch")
 
 function Table:initialize(isCake, ...)
    Entity.initialize(self, ...)
