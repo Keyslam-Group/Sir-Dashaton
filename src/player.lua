@@ -77,7 +77,7 @@ function Player:initialize(entities, camera, ...)
       dash      = {"mouse:1"},
    })
    
-   self.batch:add(self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
+   self.batch:setTransformation(1, self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
 
    self.entities = entities
    self.camera   = camera
