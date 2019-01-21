@@ -3,8 +3,8 @@ local PATH = (...):gsub('%.[^%.]+$', '')
 local Transform = require (PATH .. '.transform')
 
 local Camera = {
-   defaultShader   = love.graphics.newShader(PATH:gsub('%.', '/').."/defaultShader.glsl"  ),
-   animationShader = love.graphics.newShader(PATH:gsub('%.', '/').."/animationShader.glsl"),
+   basicShader = love.graphics.newShader(PATH:gsub('%.', '/').."/basicShader.glsl"),
+   frameShader = love.graphics.newShader(PATH:gsub('%.', '/').."/frameShader.glsl"),
 }
 Camera.__index = Camera
 
@@ -12,15 +12,17 @@ Camera.__index = Camera
 -- @param w, h The dimension of the Camera. Defaults to window size
 -- @returns A new Camera object.
 function Camera.new(w, h)
+   local transform = Transform():reset()
    return setmetatable({
-      shader         = Camera.defaultShader,
-      color          = nil,
-      depth          = nil,
-      canvas         = nil,
-      rendering      = false,
-      transform      = Transform.new():reset(),
-      dirtyTransform = true,
-      loveTransform  = love.math.newTransform() --luacheck: ignore
+      shader    = Camera.basicShader,
+      color     = nil,
+      depth     = nil,
+      canvas    = nil,
+      rendering = false,
+      transform = transform,
+
+      dirtyTransform    = false,
+      inverseTransform  = transform:inverse()
    }, Camera):resize(w, h)
 end
 
@@ -70,10 +72,10 @@ end
 -- @param shader The shader to use. Defaults to the Lovox shader
 -- @returns self
 function Camera:setShader(shader)
-   if shader == "animation" then
-      self.shader = Camera.animationShader
-   elseif shader == "default" or shader == nil then
-      self.shader = Camera.defaultShader
+   if shader == "frame" then
+      self.shader = Camera.frameShader
+   elseif shader == "basic" or shader == nil then
+      self.shader = Camera.basicShader
    else
       self.shader = shader
    end
@@ -141,22 +143,17 @@ function Camera:origin()
    return sendCamera(self)
 end
 
-function Camera:transformPoint(x, y)
-   if self.dirtyTransform then
-      local love, lovox = self.loveTransform, self.transform
-      love:setMatrix(lovox:getMatrix())
-   end
-
-   return self.loveTransform:transformPoint(x, y)
+function Camera:transformPoint(x, y, z)
+   return self.transform:transformPoint(x, y, z)
 end
 
-function Camera:inverseTransformPoint(x, y)
+function Camera:inverseTransformPoint(x, y, z)
    if self.dirtyTransform then
-      local love, lovox = self.loveTransform, self.transform
-      love:setMatrix(lovox:getMatrix())
+      self.transform:inverse(self.inverse)
+      self.dirty = false
    end
 
-   return self.loveTransform:inverseTransformPoint(x, y)
+   return self.inverse:transformPoint(x, y, z)
 end
 
 local function clear(self, r, g, b, a)
@@ -189,7 +186,7 @@ function Camera:renderTo(func, ...)
    self.rendering = true
    sendCamera(self)
 
-   func(...) --Should probably pcall or xpcall
+   func(...) -- Should probably pcall or xpcall
 
    love.graphics.setDepthMode() --luacheck: ignore
    love.graphics.setCanvas()

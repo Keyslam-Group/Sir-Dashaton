@@ -4,6 +4,7 @@ local voxelCount, usage = 1000, "static"
 local vertices, vertexMap = {}, {}
 
 local VoxelBatch = require "lib.lovox.voxelBatch"
+local Mesh = require("lib.lovox.mesh")
 
 --Get the texture
 local texture = love.graphics.newArrayImage{"assets/super-wall.png"}
@@ -68,7 +69,7 @@ for i = 0, 10 - 1 do
 end
 
 --Create model attributes
-local modelAttributes, instanceData, vertexBuffer = VoxelBatch.newModelAttributes(voxelCount, usage)
+local modelAttributes, instanceData, vertexBuffer = Mesh.newModelAttributes(voxelCount, usage)
 
 --The model mesh, is a static mesh which has the different layers and the associated texture
 local mesh = love.graphics.newMesh(VoxelBatch.vertexFormat, vertices, "triangles", "static")
