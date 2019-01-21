@@ -21,14 +21,14 @@ function Sword:initialize(...)
       Assets.sword.oy,
       Assets.sword.oz
    )
-   Sword.batch:setAnimationFrame(self.id, 0)
+   Sword.batch:setFrame(self.id, 0)
 
    self.frame = 0
 end
 
 function Sword:increment ()
    self.frame = math.min(2, self.frame + 1)
-   Sword.batch:setAnimationFrame(self.id, self.frame)
+   Sword.batch:setFrame(self.id, self.frame)
 end
 
 function Sword.render()

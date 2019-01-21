@@ -15,7 +15,7 @@ function Table:initialize(isCake, ...)
    self.shape.obj = self
 
    if isCake then
-      Table.batch:setAnimationFrame(self.id, 1)
+      Table.batch:setFrame(self.id, 1)
    end
 end
 

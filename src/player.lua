@@ -76,7 +76,7 @@ function Player:initialize(entities, camera, ...)
       moveRight = {"key:d", "key:right"},
       dash      = {"mouse:1"},
    })
-   
+
    self.batch:setTransformation(1, self.position.x, self.position.y, self.position.z, -math.pi/2, 2)
 
    self.entities = entities
@@ -110,7 +110,7 @@ end
 
 function Player:update(dt)
    Entity.update(self, dt)
-   
+
    if self.dashing then
       self.state = "dash"
    end
@@ -127,7 +127,7 @@ function Player:update(dt)
 
       -- Friction and speed clamp
       self.velocity = self.velocity:trim(self.maxVelocity)
-      
+
       if movementVector:len() > 0 then
          self.state = "walking"
       else
@@ -170,7 +170,7 @@ function Player:update(dt)
                   self.chain = 0
                   self.timer = nil
                end)
-               
+
                if self.chain % 5 == 0 then
                   for _, sfx in ipairs(self.attacks) do sfx:stop() end
                   self.attacks[love.math.random(1, #self.attacks)]:play()
@@ -179,10 +179,10 @@ function Player:update(dt)
                self.chain = 0
             end
 
-            
+
             self.dashing = false
          end
-         
+
          if other.isHole and self.velocity:len() > 800 and self.dashing then
             ignore = true
             overHole = true
@@ -191,7 +191,7 @@ function Player:update(dt)
          if not ignore then
             local s = 2 * (self.velocity.x * sep_vec.x + self.velocity.y * sep_vec.y) / (sep_vec.x * sep_vec.x + sep_vec.y * sep_vec.y)
             self.velocity = -Vec3(s * sep_vec.x - self.velocity.x, s * sep_vec.y - self.velocity.y, 0)
-         end 
+         end
       end
 
       if not ignore then
@@ -250,11 +250,11 @@ function Player:update(dt)
       self.animTimer = 0
       self.animIndex = self.animIndex + 1
    end
-   
+
 
    self.state = self[self.state](self, dt)
    local animations = self.hasSword and self.swordAnimations or self.animations
-   Player.batch:setAnimationFrame(1, animations[self.state][self.animIndex])
+   Player.batch:setFrame(1, animations[self.state][self.animIndex])
 
    self.batch:setTransformation(1,
       self.position.x,

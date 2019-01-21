@@ -16,9 +16,9 @@ function DashParticle:initialize(...)
    if #freeIDs > 0 then
       self.id = freeIDs[#freeIDs]
       freeIDs[#freeIDs] = nil
-      DashParticle.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation, 6)
+      --DashParticle.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation, 6)
    else
-      self.id = DashParticle.batch:add(self.position.x, self.position.y, self.position.z, self.rotation, 6)
+      --self.id = DashParticle.batch:add(self.position.x, self.position.y, self.position.z, self.rotation, 6)
    end
 
    self.maxlife  = 3 + love.math.random()
@@ -40,7 +40,7 @@ function DashParticle:update(dt)
 
    self.position = self.position + self.velocity * dt
    self.rotation = self.rotation + self.rotSpeed * dt
-   DashParticle.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation, 6 * lifeleftv)
+   --DashParticle.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation, 6 * lifeleftv)
 
    if self.lifeleft <= 0 then
       self.isAlive = false

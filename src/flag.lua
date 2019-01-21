@@ -11,7 +11,7 @@ function Flag:initialize(...)
    Entity.initialize(self, ...)
 
    self.id = Flag.batch:add(self.position.x, self.position.y, self.position.z, self.rotation, 2)
-   Flag.batch:setAnimationFrame(self.id, love.math.random(3, 5))
+   Flag.batch:setFrame(self.id, love.math.random(3, 5))
 end
 
 function Flag.render()

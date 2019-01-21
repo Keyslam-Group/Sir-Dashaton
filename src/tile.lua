@@ -12,7 +12,7 @@ function Tile:initialize(...)
 
    self.id = Tile.batch:add(self.position.x, self.position.y, self.position.z, self.rotation, 2)
 
-   Tile.batch:setAnimationFrame(self.id, love.math.random(0, 2))
+   Tile.batch:setFrame(self.id, love.math.random(0, 2))
 end
 
 function Tile.render()

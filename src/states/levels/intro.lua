@@ -29,7 +29,7 @@ local Batches = {
    require("src.knightbatch"),
    require("src.skeletonbatch"),
    require("src.tablebatch"),
-   require("src.wallbatch"),
+   --require("src.wallbatch"),
    require("src.tilebatch"),
    require("src.omegaskeletonbatch"),
    require("src.swordbatch")
@@ -196,7 +196,7 @@ function Intro:update(dt)
 
    self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
    self.camy = lerp(self.camy, self.entities[1].position.y, 5 * dt)
-   
+
    if self.fading then
       self.fadeIntensity = math.min(1, lerp(self.fadeIntensity, 1.1, dt))
       self.introAudio:setVolume(1 - self.fadeIntensity)
@@ -217,12 +217,12 @@ function Intro:render()
    self.camera:clear(0, 0, 0, 0)
    local w, h = love.graphics.getDimensions()
 
-   self.camera:setShader("animation")
+   self.camera:setShader("frame")
    for _, batch in ipairs(Batches) do
       batch:draw()
    end
 
-   self.camera:setShader("default")
+   self.camera:setShader("basic")
    DashParticle:render()
 end
 

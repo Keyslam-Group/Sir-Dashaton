@@ -153,7 +153,7 @@ function Camera:inverseTransformPoint(x, y, z)
       self.dirty = false
    end
 
-   return self.inverse:transformPoint(x, y, z)
+   return self.inverseTransform:transformPoint(x, y, z)
 end
 
 local function clear(self, r, g, b, a)

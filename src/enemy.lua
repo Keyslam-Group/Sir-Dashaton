@@ -32,7 +32,7 @@ function Enemy:initialize(...)
 end
 
 function Enemy:idle(dt)
-   Enemy.batch:setAnimationFrame(self.id, 1)
+   Enemy.batch:setFrame(self.id, 1)
 
    if self.animIndex > 1 then
       self.animIndex = 1
@@ -118,7 +118,7 @@ function Enemy:update(dt)
    end
 
    self.state = self[self.state](self, dt)
-   Enemy.batch:setAnimationFrame(self.id, self.animations[self.state][self.animIndex])
+   Enemy.batch:setFrame(self.id, self.animations[self.state][self.animIndex])
 
    self.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
    self.shape:moveTo(self.position.x, self.position.y)

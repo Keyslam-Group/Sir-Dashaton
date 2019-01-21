@@ -93,7 +93,7 @@ function OmegaSkeleton:update(dt)
    end
 
    self.state = self[self.state](self, dt)
-   OmegaSkeleton.batch:setAnimationFrame(self.id, self.animations[self.state][self.animIndex])
+   OmegaSkeleton.batch:setFrame(self.id, self.animations[self.state][self.animIndex])
 
    self.batch:setTransformation(self.id, self.position.x, self.position.y, self.position.z, self.rotation - math.pi/2, 2)
    self.shape:moveTo(self.position.x, self.position.y)

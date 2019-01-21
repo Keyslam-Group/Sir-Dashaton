@@ -24,7 +24,7 @@ local Batches = {
    require("src.knightbatch"),
    require("src.skeletonbatch"),
    require("src.tablebatch"),
-   require("src.wallbatch"),
+   --require("src.wallbatch"),
    require("src.tilebatch"),
    require("src.omegaskeletonbatch"),
 }
@@ -97,9 +97,9 @@ function Level1:update(dt)
 
    local w, h = love.graphics.getDimensions()
    self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
-   
+
    Game.update(self, dt)
-   
+
    self.camera:origin()
 
    self.camx = lerp(self.camx, self.entities[1].position.x, 5 * dt)
