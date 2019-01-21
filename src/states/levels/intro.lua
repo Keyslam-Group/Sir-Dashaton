@@ -29,7 +29,7 @@ local Batches = {
    require("src.knightbatch"),
    require("src.skeletonbatch"),
    require("src.tablebatch"),
-   --require("src.wallbatch"),
+   require("src.wallbatch"),
    require("src.tilebatch"),
    require("src.omegaskeletonbatch"),
    require("src.swordbatch")
