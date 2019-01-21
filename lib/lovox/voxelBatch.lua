@@ -1,7 +1,7 @@
 local PATH = (...):gsub('%.[^%.]+$', '')
 
-local ffi       = require("ffi")
-local Mesh      = require(PATH..".mesh")
+local ffi  = require("ffi")
+local Mesh = require(PATH..".mesh")
 
 -- Define the module
 local VoxelBatch = {}
@@ -118,10 +118,7 @@ function VoxelBatch:setFrame(index, frame)
 
       f = math.floor(f)
       if f >= 0 and f < self.texture:getLayerCount() then
-         local instance = self.vertexBuffer[index - 1]
-
-         instance.frame = math.floor(f)
-
+         self.vertexBuffer[index - 1].frame = f
          self.isDirty = true
       else
          error(ERR_FRAME:format(self.texture:getLayerCount() - 1, f), 2)

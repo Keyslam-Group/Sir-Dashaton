@@ -10,13 +10,13 @@ attribute vec4  MatRow1;
 attribute vec4  MatRow2;
 attribute vec4  MatRow3;
 attribute vec4  MatRow4;
-attribute float AnimationFrame;
+attribute float Frame;
 
 // Transforms our voxel into screen space coordinates properly
 vec4 position(mat4 ortho, vec4 vertex) {
    mat4 transform = mat4(MatRow1, MatRow2, MatRow3, MatRow4);
 
-   VaryingFrame = AnimationFrame;
+   VaryingFrame = Frame;
    return ClipSpaceFromView * projection * view * transform * vertex;
 }
 
