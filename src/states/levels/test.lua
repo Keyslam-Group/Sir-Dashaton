@@ -109,12 +109,12 @@ function Test:render()
    local w, h = love.graphics.getDimensions()
    self.camera:setTransformation(w/2, h/2, 0, self.camr, 1, 1, 1, self.camx, self.camy)
 
-   self.camera:setShader("animation")
+   self.camera:setShader("frame")
    for _, batch in ipairs(Batches) do
       batch:draw()
    end
 
-   self.camera:setShader("default")
+   self.camera:setShader("basic")
    DashParticle:render()
 end
 
